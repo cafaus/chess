@@ -1,7 +1,7 @@
 # Chess
 project for code reengineering
 
-# How to Play
+<h2> How to Play </h2>
 Uppercase: Black Piece
 Lowercase: White Piece
 

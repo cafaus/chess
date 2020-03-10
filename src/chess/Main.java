@@ -10,14 +10,6 @@ public class Main {
 
 	public Main() {
 		Board chessBoard =new Board();
-		
-		
-		
-		
-		
-		
-		
-
 		while(true) {
 			
 			chessBoard.showBoard();
@@ -26,11 +18,7 @@ public class Main {
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-
-			
 		}
-
-		
 	}
 
 

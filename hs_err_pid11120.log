@@ -1,0 +1,230 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 1132096 bytes for Chunk::new
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Unscaled Compressed Oops mode in which the Java heap is
+#     placed in the first 4GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 4GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:389), pid=11120, tid=0x0000000000000818
+#
+# JRE version: OpenJDK Runtime Environment (8.0_202-b08) (build 1.8.0_202-b08)
+# Java VM: OpenJDK 64-Bit Server VM (25.202-b08 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000019a29000):  JavaThread "C2 CompilerThread2" daemon [_thread_in_native, id=2072, stack(0x000000001b840000,0x000000001b940000)]
+
+Stack: [0x000000001b840000,0x000000001b940000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+Current CompileTask:
+C2:14103659  235 %     4       org.eclipse.jdt.launching.internal.org.objectweb.asm.ClassReader::readCode @ 71 (5089 bytes)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x0000000019aae000 JavaThread "Service Thread" daemon [_thread_blocked, id=20764, stack(0x000000001ba40000,0x000000001bb40000)]
+  0x0000000019a2b800 JavaThread "C1 CompilerThread3" daemon [_thread_blocked, id=9992, stack(0x000000001b940000,0x000000001ba40000)]
+=>0x0000000019a29000 JavaThread "C2 CompilerThread2" daemon [_thread_in_native, id=2072, stack(0x000000001b840000,0x000000001b940000)]
+  0x0000000019a1b000 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=15272, stack(0x000000001b740000,0x000000001b840000)]
+  0x0000000019a37800 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=17040, stack(0x000000001b640000,0x000000001b740000)]
+  0x000000001992f000 JavaThread "JDWP Command Reader" daemon [_thread_in_native, id=18592, stack(0x000000001b540000,0x000000001b640000)]
+  0x000000001991d000 JavaThread "JDWP Event Helper Thread" daemon [_thread_blocked, id=14496, stack(0x000000001b440000,0x000000001b540000)]
+  0x000000001822e800 JavaThread "JDWP Transport Listener: dt_socket" daemon [_thread_blocked, id=11620, stack(0x000000001b340000,0x000000001b440000)]
+  0x0000000019913000 JavaThread "Attach Listener" daemon [_thread_blocked, id=17644, stack(0x000000001ae70000,0x000000001af70000)]
+  0x0000000019912000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=18880, stack(0x000000001ad70000,0x000000001ae70000)]
+  0x0000000019903800 JavaThread "Finalizer" daemon [_thread_blocked, id=21400, stack(0x000000001ab60000,0x000000001ac60000)]
+  0x000000001821e000 JavaThread "Reference Handler" daemon [_thread_blocked, id=2348, stack(0x000000001aa60000,0x000000001ab60000)]
+  0x0000000002fd3800 JavaThread "main" [_thread_in_native, id=14800, stack(0x0000000002d60000,0x0000000002e60000)]
+
+Other Threads:
+  0x0000000018215800 VMThread [stack: 0x000000001a960000,0x000000001aa60000] [id=3684]
+  0x0000000019ab2000 WatcherThread [stack: 0x000000001bb40000,0x000000001bc40000] [id=12080]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+heap address: 0x0000000082400000, size: 2012 MB, Compressed Oops mode: 32-bit
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 3
+Compressed class space size: 1073741824 Address: 0x0000000100000000
+
+Heap:
+ PSYoungGen      total 37888K, used 9188K [0x00000000d6180000, 0x00000000d8b80000, 0x0000000100000000)
+  eden space 32768K, 28% used [0x00000000d6180000,0x00000000d6a79358,0x00000000d8180000)
+  from space 5120K, 0% used [0x00000000d8680000,0x00000000d8680000,0x00000000d8b80000)
+  to   space 5120K, 0% used [0x00000000d8180000,0x00000000d8180000,0x00000000d8680000)
+ ParOldGen       total 86016K, used 0K [0x0000000082400000, 0x0000000087800000, 0x00000000d6180000)
+  object space 86016K, 0% used [0x0000000082400000,0x0000000082400000,0x0000000087800000)
+ Metaspace       used 5783K, capacity 5890K, committed 6016K, reserved 1056768K
+  class space    used 588K, capacity 625K, committed 640K, reserved 1048576K
+
+Card table byte_map: [0x00000000124a0000,0x0000000012890000] byte_map_base: 0x000000001208e000
+
+Marking Bits: (ParMarkBitMap*) 0x000000006615af30
+ Begin Bits: [0x0000000013530000, 0x00000000154a0000)
+ End Bits:   [0x00000000154a0000, 0x0000000017410000)
+
+Polling page: 0x0000000000bd0000
+
+CodeCache: size=245760Kb used=1897Kb max_used=1897Kb free=243862Kb
+ bounds [0x00000000030e0000, 0x0000000003350000, 0x00000000120e0000]
+ total_blobs=523 nmethods=234 adapters=211
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 13149.041 Thread 0x0000000019a2b800 nmethod 230 0x000000000329d090 code [0x000000000329d220, 0x000000000329d5c8]
+Event: 13149.041 Thread 0x0000000019a2b800  231       3       org.eclipse.jdt.launching.internal.org.objectweb.asm.MethodWriter::visitCode (1 bytes)
+Event: 13149.041 Thread 0x0000000019a2b800 nmethod 231 0x00000000032ba4d0 code [0x00000000032ba620, 0x00000000032ba770]
+Event: 13149.041 Thread 0x0000000019a2b800  232       3       org.eclipse.jdt.launching.internal.org.objectweb.asm.MethodWriter::hasFrames (13 bytes)
+Event: 13149.041 Thread 0x0000000019a2b800 nmethod 232 0x00000000032ba150 code [0x00000000032ba2a0, 0x00000000032ba450]
+Event: 13480.633 Thread 0x0000000019a2b800  233       3       org.eclipse.jdt.launching.internal.org.objectweb.asm.MethodWriter::canCopyMethodAttributes (181 bytes)
+Event: 13480.634 Thread 0x0000000019a2b800 nmethod 233 0x00000000032b9210 code [0x00000000032b93c0, 0x00000000032b9c70]
+Event: 14055.348 Thread 0x0000000019a2b800  234       3       org.eclipse.jdt.launching.internal.org.objectweb.asm.MethodWriter::visitIincInsn (135 bytes)
+Event: 14055.349 Thread 0x0000000019a2b800 nmethod 234 0x00000000032ba810 code [0x00000000032ba9e0, 0x00000000032bb098]
+Event: 14103.415 Thread 0x0000000019a29000  235 %     4       org.eclipse.jdt.launching.internal.org.objectweb.asm.ClassReader::readCode @ 71 (5089 bytes)
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (8 events):
+Event: 205.571 Thread 0x0000000018215800 redefined class name=chess.Board, count=1
+Event: 2532.857 Thread 0x0000000018215800 redefined class name=chess.ChessPieceBehaviors, count=1
+Event: 2571.299 Thread 0x0000000018215800 redefined class name=chess.ChessPieceBehaviors, count=2
+Event: 2637.060 Thread 0x0000000018215800 redefined class name=chess.ChessPieceBehaviors, count=3
+Event: 2732.480 Thread 0x0000000018215800 redefined class name=chess.ChessPieceBehaviors, count=4
+Event: 2776.233 Thread 0x0000000018215800 redefined class name=chess.ChessPieceBehaviors, count=5
+Event: 3587.318 Thread 0x0000000018215800 redefined class name=chess.ChessPieceBehaviors, count=6
+Event: 5931.766 Thread 0x0000000018215800 redefined class name=chess.ChessPieceBehaviors, count=7
+
+Internal exceptions (8 events):
+Event: 0.053 Thread 0x0000000002fd3800 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.defineClass(Ljava/lang/String;[BII)Ljava/lang/Class; name or signature does not match> (0x00000000d6188278) thrown at [C:\OpenJDK\correttou202\src\hotspot\src\share\vm\prims\jni.cpp, line 
+Event: 0.053 Thread 0x0000000002fd3800 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.prefetchRead(Ljava/lang/Object;J)V name or signature does not match> (0x00000000d6188560) thrown at [C:\OpenJDK\correttou202\src\hotspot\src\share\vm\prims\jni.cpp, line 4012]
+Event: 0.404 Thread 0x0000000002fd3800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d67a9b58) thrown at [C:\OpenJDK\correttou202\src\hotspot\src\share\vm\prims\jvm.cpp, line 1502]
+Event: 0.404 Thread 0x0000000002fd3800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d67a9f50) thrown at [C:\OpenJDK\correttou202\src\hotspot\src\share\vm\prims\jvm.cpp, line 1502]
+Event: 0.405 Thread 0x0000000002fd3800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d67adea8) thrown at [C:\OpenJDK\correttou202\src\hotspot\src\share\vm\prims\jvm.cpp, line 1502]
+Event: 0.405 Thread 0x0000000002fd3800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d67ae2a0) thrown at [C:\OpenJDK\correttou202\src\hotspot\src\share\vm\prims\jvm.cpp, line 1502]
+Event: 0.405 Thread 0x0000000002fd3800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d67afa48) thrown at [C:\OpenJDK\correttou202\src\hotspot\src\share\vm\prims\jvm.cpp, line 1502]
+Event: 0.405 Thread 0x0000000002fd3800 Exception <a 'java/security/PrivilegedActionException'> (0x00000000d67afe40) thrown at [C:\OpenJDK\correttou202\src\hotspot\src\share\vm\prims\jvm.cpp, line 1502]
+
+Events (10 events):
+Event: 2637.057 Executing VM operation: RedefineClasses
+Event: 2637.060 Executing VM operation: RedefineClasses done
+Event: 2732.478 Executing VM operation: RedefineClasses
+Event: 2732.480 Executing VM operation: RedefineClasses done
+Event: 2776.232 Executing VM operation: RedefineClasses
+Event: 2776.234 Executing VM operation: RedefineClasses done
+Event: 3587.316 Executing VM operation: RedefineClasses
+Event: 3587.318 Executing VM operation: RedefineClasses done
+Event: 5931.763 Executing VM operation: RedefineClasses
+Event: 5931.766 Executing VM operation: RedefineClasses done
+
+
+Dynamic libraries:
+0x00007ff661430000 - 0x00007ff661465000 	C:\Program Files\Amazon Corretto\jdk1.8.0_202\bin\javaw.exe
+0x00007ff8248e0000 - 0x00007ff824ad0000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ff8231d0000 - 0x00007ff823282000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ff821ad0000 - 0x00007ff821d73000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ff823ec0000 - 0x00007ff823f63000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ff822b30000 - 0x00007ff822bce000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ff8245d0000 - 0x00007ff824667000 	C:\WINDOWS\System32\sechost.dll
+0x00007ff823000000 - 0x00007ff823120000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ff822990000 - 0x00007ff822b24000 	C:\WINDOWS\System32\USER32.dll
+0x00007ff822020000 - 0x00007ff822041000 	C:\WINDOWS\System32\win32u.dll
+0x00007ff8231a0000 - 0x00007ff8231c6000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ff822050000 - 0x00007ff8221e4000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ff821870000 - 0x00007ff82190e000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ff821dd0000 - 0x00007ff821eca000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ff80b1c0000 - 0x00007ff80b445000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.18362.657_none_e6c5b579130e3898\COMCTL32.dll
+0x00007ff822c60000 - 0x00007ff822f96000 	C:\WINDOWS\System32\combase.dll
+0x00007ff821910000 - 0x00007ff821990000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ff822bd0000 - 0x00007ff822bfe000 	C:\WINDOWS\System32\IMM32.DLL
+0x0000000068750000 - 0x0000000068822000 	C:\Program Files\Amazon Corretto\jdk1.8.0_202\jre\bin\msvcr100.dll
+0x0000000065990000 - 0x00000000661d7000 	C:\Program Files\Amazon Corretto\jdk1.8.0_202\jre\bin\server\jvm.dll
+0x00007ff8245c0000 - 0x00007ff8245c8000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ff81c760000 - 0x00007ff81c76a000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ff818ef0000 - 0x00007ff818f14000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ff81ee70000 - 0x00007ff81ee79000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ff824520000 - 0x00007ff82458f000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ff818cb0000 - 0x00007ff818cdd000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x00007ff821d80000 - 0x00007ff821dca000 	C:\WINDOWS\System32\cfgmgr32.dll
+0x00007ff820410000 - 0x00007ff82041f000 	C:\Program Files\Amazon Corretto\jdk1.8.0_202\jre\bin\verify.dll
+0x00007ff8078c0000 - 0x00007ff8078e9000 	C:\Program Files\Amazon Corretto\jdk1.8.0_202\jre\bin\java.dll
+0x00007ff81ef30000 - 0x00007ff81ef65000 	C:\Program Files\Amazon Corretto\jdk1.8.0_202\jre\bin\jdwp.dll
+0x00007ff81ef20000 - 0x00007ff81ef28000 	C:\Program Files\Amazon Corretto\jdk1.8.0_202\jre\bin\npt.dll
+0x00007ff81eef0000 - 0x00007ff81ef13000 	C:\Program Files\Amazon Corretto\jdk1.8.0_202\jre\bin\instrument.dll
+0x00007ff81ccf0000 - 0x00007ff81cd06000 	C:\Program Files\Amazon Corretto\jdk1.8.0_202\jre\bin\zip.dll
+0x00007ff8237d0000 - 0x00007ff823eb5000 	C:\WINDOWS\System32\SHELL32.dll
+0x00007ff824470000 - 0x00007ff824519000 	C:\WINDOWS\System32\shcore.dll
+0x00007ff8221f0000 - 0x00007ff82296f000 	C:\WINDOWS\System32\windows.storage.dll
+0x00007ff821850000 - 0x00007ff82186f000 	C:\WINDOWS\System32\profapi.dll
+0x00007ff8217e0000 - 0x00007ff82182a000 	C:\WINDOWS\System32\powrprof.dll
+0x00007ff8217b0000 - 0x00007ff8217c0000 	C:\WINDOWS\System32\UMPDC.dll
+0x00007ff822fa0000 - 0x00007ff822ff2000 	C:\WINDOWS\System32\shlwapi.dll
+0x00007ff8217c0000 - 0x00007ff8217d1000 	C:\WINDOWS\System32\kernel.appcore.dll
+0x00007ff822970000 - 0x00007ff822987000 	C:\WINDOWS\System32\cryptsp.dll
+0x00007ff81eee0000 - 0x00007ff81eee9000 	C:\Program Files\Amazon Corretto\jdk1.8.0_202\jre\bin\dt_socket.dll
+0x00007ff801030000 - 0x00007ff801046000 	C:\WINDOWS\system32\napinsp.dll
+0x00007ff800fe0000 - 0x00007ff800ffa000 	C:\WINDOWS\system32\pnrpnsp.dll
+0x00007ff821020000 - 0x00007ff821087000 	C:\WINDOWS\System32\mswsock.dll
+0x00007ff820d70000 - 0x00007ff820e3a000 	C:\WINDOWS\SYSTEM32\DNSAPI.dll
+0x00007ff8245b0000 - 0x00007ff8245b8000 	C:\WINDOWS\System32\NSI.dll
+0x00007ff820d30000 - 0x00007ff820d6a000 	C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL
+0x00007ff813180000 - 0x00007ff81318e000 	C:\WINDOWS\System32\winrnr.dll
+0x00007ff81c730000 - 0x00007ff81c74c000 	C:\WINDOWS\system32\NLAapi.dll
+0x00007ff800fc0000 - 0x00007ff800fd5000 	C:\WINDOWS\system32\wshbth.dll
+0x0000000067c50000 - 0x0000000067c85000 	C:\Program Files\Bonjour\mdnsNSP.dll
+0x00007ff81a790000 - 0x00007ff81a807000 	C:\WINDOWS\System32\fwpuclnt.dll
+0x00007ff821990000 - 0x00007ff8219b6000 	C:\WINDOWS\System32\bcrypt.dll
+0x00007ff818c80000 - 0x00007ff818c8a000 	C:\Windows\System32\rasadhlp.dll
+
+VM Arguments:
+jvm_args: -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:54019 -javaagent:C:\Users\Asus\Downloads\eclipse-java-2018-12-R-win32-x86_64\eclipse\configuration\org.eclipse.osgi\221\0\.cp\lib\javaagent-shaded.jar -Dfile.encoding=Cp1252 
+java_command: chess.Main
+java_class_path (initial): D:\kuliah\Semester 4\Code Reengineering\Tugas\chess_project\bin;C:\Users\Asus\Downloads\eclipse-java-2018-12-R-win32-x86_64\eclipse\configuration\org.eclipse.osgi\221\0\.cp\lib\javaagent-shaded.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Amazon Corretto\jdk1.8.0_202
+USERNAME=Asus
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 158 Stepping 10, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 18362 (10.0.18362.329)
+
+CPU:total 12 (initial active 12) (6 cores per cpu, 2 threads per core) family 6 model 158 stepping 10, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx
+
+Memory: 4k page, physical 8239352k(1541336k free), swap 23730804k(296k free)
+
+vm_info: OpenJDK 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Jan 23 2019 22:53:35 by "Administrator" with MS VC++ 10.0 (VS2010)
+
+time: Fri Mar 06 21:34:07 2020
+timezone: SE Asia Standard Time
+elapsed time: 14103 seconds (0d 3h 55m 3s)
+

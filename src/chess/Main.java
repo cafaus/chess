@@ -1,13 +1,7 @@
 package chess;
 
-import java.util.Scanner;
 
 public class Main {
-	
-	
-	
-	
-
 	public Main() {
 		Board chessBoard =new Board();
 		while(true) {

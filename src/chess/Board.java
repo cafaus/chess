@@ -3,6 +3,8 @@ package chess;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.sun.org.apache.xml.internal.dtm.ref.CoroutineManager;
+
 public class Board {
 	char[][] board;
 	boolean isWhiteMove = true;
@@ -94,9 +96,7 @@ public class Board {
 		if(input.charAt(2) != '-') throw new Exception("Invalid Move: third character!!!");
 		if(isOutside(toIndexZero,'A','Z')) throw new Exception("Invalid Move: fourth character!!!");
 		if(isOutside(toIndexOne, '1', '8')) throw new Exception("Invalid Move: five character!!!");
-		
-		
-		
+	
 		
 		coordinate.setFromX(fromIndexZero - 65);
 		coordinate.setFromY(7 - (fromIndexOne - 49));
@@ -124,60 +124,98 @@ public class Board {
 		
 		char chessPiece = board[coordinate.getFromY()][coordinate.getFromX()];
 		chessPiece =  toLower(chessPiece);
+		System.out.println(chessPiece);
 		
-		
-		if(chessPiece == 'p') {
-			return isPawnMove(coordinate);
-		}
-		if(chessPiece == 'r')return true;
-		if(chessPiece == 'n')return true;
-		if(chessPiece == 'b')return true;
-		if(chessPiece == 'q')return true;
-		if(chessPiece == 'k')return true;
+		if(chessPiece == 'p')return isPawnMove(coordinate);
+		if(chessPiece == 'r')return isRookMove(coordinate);
+		if(chessPiece == 'n')return isKnightMove(coordinate);
+		if(chessPiece == 'b')return isBishopMove(coordinate);
+		if(chessPiece == 'q')return isQueenMove(coordinate);
+		if(chessPiece == 'k')return isKingMove(coordinate);;
 		
 		return false;
 		
 	}
+
+	
+
+
+
+	
+
+
+
+	
+
+
+
+	
 
 
 
 	private boolean isPawnMove(Coordinates coordinate) {
-		
-		if(chessPieceBehavior.isPawnBehavior(coordinate, board)) {
-			return validateCaptureChessPiece(coordinate, 'p');	
-		}
-		
+		if(chessPieceBehavior.isPawnBehavior(coordinate, board))return validateCaptureChessPiece(coordinate, 'p');
+		return false;
+	}
+
+	private boolean isRookMove(Coordinates coordinate) {
+		if(chessPieceBehavior.isRookBehavior(coordinate, board)) return validateCaptureChessPiece(coordinate, 'r');
+		return false;
+	}
+	
+	private boolean isKnightMove(Coordinates coordinate) {
+		if(chessPieceBehavior.isKnightBehavior(coordinate, board)) return validateCaptureChessPiece(coordinate, 'n');
+		return false;
+	}
+	
+	private boolean isBishopMove(Coordinates coordinate) {
+		if(chessPieceBehavior.isBishopBehavior(coordinate, board)) return validateCaptureChessPiece(coordinate, 'b');
+		return false;
+	}
+	private boolean isQueenMove(Coordinates coordinate) {
+		if(chessPieceBehavior.isQueenBehavior(coordinate, board)) return validateCaptureChessPiece(coordinate, 'q');
+		return false;
+	}
+	private boolean isKingMove(Coordinates coordinate) {
+		if(chessPieceBehavior.isKingBehavior(coordinate, board)) return validateCaptureChessPiece(coordinate, 'k');
 		return false;
 	}
 
 
+	
+
+
 
 	private boolean validateCaptureChessPiece(Coordinates coordinate, char whiteChessPiece) {
-		char blackChessPiece = (char)(whiteChessPiece - 32);
-		System.out.println(blackChessPiece);
+		char blackChessPiece = toUpper(whiteChessPiece); 
+		
 		if(isWhiteMove) {
 			if(chessPieceBehavior.isBlack(board[coordinate.getToY()][coordinate.getToX()])) {
-				captureChessPiece(coordinate, 'p');
+				captureChessPiece(coordinate, whiteChessPiece);
 				return true;
 			}
 			else if(!chessPieceBehavior.isChessPiece(board, coordinate.getToY(), coordinate.getToX())){
-				moveChessPiece(coordinate,'p');
+				moveChessPiece(coordinate, whiteChessPiece);
 				return true;
 			}
 		}
 		else {
 			if(chessPieceBehavior.isWhite(board[coordinate.getToY()][coordinate.getToX()])) {
-				captureChessPiece(coordinate, 'P');
+				captureChessPiece(coordinate, blackChessPiece);
 				return true;
 			}
 			else if(!chessPieceBehavior.isChessPiece(board, coordinate.getToY(), coordinate.getToX())){
 				
-				moveChessPiece(coordinate, 'P');
+				moveChessPiece(coordinate, blackChessPiece);
 				return true;
 			}
 		}
 		return false;
 	}
+
+
+
+	
 
 
 
@@ -197,10 +235,14 @@ public class Board {
 
 
 
-	private char toLower(char chessPiece) {
-		if(isOutside(chessPiece, 'A', 'Z')) return chessPiece;
-		return (char) (chessPiece + 32);
+	private char toLower(char letter) {
+		if(isOutside(letter, 'A', 'Z')) return letter;
+		return (char) (letter + 32);
 		
+	}
+	private char toUpper(char letter) {
+		if(isOutside(letter, 'a', 'z')) return letter;
+		return (char)(letter - 32);
 	}
 
 

@@ -1,5 +1,17 @@
 package chess;
 
+/**
+ * 
+ * 
+ *	TODO
+ *check
+ *bishop behavior
+ *queen behavior
+ *king behavior
+ *win condition
+ *draw condition
+ *lose condition 
+ */
 public class ChessPieceBehaviors {
 	private boolean isWhiteMove;
 	
@@ -31,7 +43,6 @@ public class ChessPieceBehaviors {
 				coordinate.setBottomBoundary(fromY + 2);
 				
 				if(validatePawnOnFirstMove(coordinate, board, -1)) return true;
-				System.out.println("fuck");
 			}else {
 				coordinate.setTopBoundary(fromY );
 				coordinate.setBottomBoundary(fromY + 1);
@@ -62,7 +73,7 @@ public class ChessPieceBehaviors {
 		int toY = coordinate.getToY();
 		if(captureChessPieceDiagonal(coordinate, board, oneTileForward)) return true;
 		if(isMoveOneTileForward(coordinate, oneTileForward) && !isChessPiece(board, toY, toX)) return true;
-		if( isBetweenTheBoundary(coordinate, fromX, toX, toY) && !isChessPiece(board, toY, toX)) {
+		if(isBetweenTheBoundary(coordinate, fromX, toX, toY) && !isChessPiece(board, toY, toX)) {
 			if(isExistBetweenFromAndToInY(board, toY  ,fromY, toX)) return false;
 			return true;
 		}
@@ -137,6 +148,68 @@ public class ChessPieceBehaviors {
 		for (int i = from; i < to; i++) {
 			if(board[Y][i] != '-' && board[Y][i] != '+') return true; 
 		}
+		return false;
+	}
+	
+	public boolean isRookBehavior(Coordinates coordinate, char[][] board) {
+		int fromX = coordinate.getFromX();
+		int fromY = coordinate.getFromY();
+		int toX = coordinate.getToX();
+		int toY = coordinate.getToY();
+		
+		boolean fromXisSmallerThanToX =  fromX < toX ? true : false;
+		boolean fromYisSmallerThanToY =  fromY < toY ? true : false;
+
+		
+		if(toY == fromY) {
+			
+			if( fromXisSmallerThanToX ) {
+				if(isExistBetweenFromAndToInX(board, fromX, toX, toY))return false;
+			}
+			else {
+				if(isExistBetweenFromAndToInX(board, toX ,fromX , toY))return false;
+			}
+			return true;
+		}
+		if( toX == fromX) {
+			
+			if( fromYisSmallerThanToY ) {
+				if(isExistBetweenFromAndToInY(board, fromY, toY, toX))return false;
+			}
+			else {
+				if(isExistBetweenFromAndToInY(board, toY  ,fromY, toX))return false;
+			}
+			return true;
+
+		}
+		
+		return false;
+	}
+	
+	public boolean isKnightBehavior(Coordinates coordinate, char[][] board) {
+		int fromX = coordinate.getFromX();
+		int fromY = coordinate.getFromY();
+		int toX = coordinate.getToX();
+		int toY = coordinate.getToY();
+		if(fromY - 2 == toY && (fromX - 1 == toX || fromX + 1 == toX)) return true;
+		if(fromY + 2 == toY && (fromX - 1 == toX || fromX + 1 == toX)) return true;
+		if(fromX - 2 == toX && (fromY - 1 == toY || fromY + 1 == toY)) return true;
+		if(fromX + 2 == toX && (fromY - 1 == toY || fromY + 1 == toY)) return true;
+		
+		return false;
+	}
+	
+	public boolean isBishopBehavior(Coordinates coordinate, char[][] board) {
+		//TODO kalo move nya sesuai sma behavior chess piece nya maka  return true kalo salah return false
+		return false;
+	}
+	
+	public boolean isQueenBehavior(Coordinates coordinate, char[][] board){
+		//TODO kalo move nya sesuai sma behavior chess piece nya maka  return true kalo salah return false
+		return false;
+	}
+	public boolean isKingBehavior(Coordinates coordinate, char[][] board){
+		//TODO kalo move nya sesuai sma behavior chess piece nya maka  return true kalo salah return false
 		return false;
 	}
 }

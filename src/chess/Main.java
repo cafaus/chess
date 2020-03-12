@@ -4,7 +4,7 @@ package chess;
 public class Main {
 	public Main() {
 		Board chessBoard =new Board();
-		while(true) {
+		while(!chessBoard.isWin()) {
 			
 			chessBoard.showBoard();
 			try {
@@ -14,10 +14,6 @@ public class Main {
 			}
 		}
 	}
-
-
-
-	
 
 	public static void main(String[] args) {
 		new Main();

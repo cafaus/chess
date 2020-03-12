@@ -23,7 +23,7 @@ public class Board {
 
 	private void intializeBoard() {
 		String buildBoardBlack = "RNBQKBNR";
-		String buildBoardWhite = "rnbkqbnr";
+		String buildBoardWhite = "rnbqkbnr";
 		
 		
 		
@@ -71,6 +71,7 @@ public class Board {
 	
 	
 	public void doTurn() throws Exception {
+		
 		chessPieceBehavior = new ChessPieceBehaviors(isWhiteMove);
 		Scanner scan = new Scanner(System.in);
 		
@@ -91,10 +92,10 @@ public class Board {
 		char toIndexZero = input.charAt(3);
 		char toIndexOne = input.charAt(4);
 		
-		if(isOutside(fromIndexZero,'A','Z'))throw new Exception("Invalid Move: first character!!!");
+		if(isOutside(fromIndexZero,'A','H'))throw new Exception("Invalid Move: first character!!!");
 		if(isOutside(fromIndexOne, '1', '8')) throw new Exception("Invalid Move: second character!!!");
 		if(input.charAt(2) != '-') throw new Exception("Invalid Move: third character!!!");
-		if(isOutside(toIndexZero,'A','Z')) throw new Exception("Invalid Move: fourth character!!!");
+		if(isOutside(toIndexZero,'A','H')) throw new Exception("Invalid Move: fourth character!!!");
 		if(isOutside(toIndexOne, '1', '8')) throw new Exception("Invalid Move: five character!!!");
 	
 		
@@ -124,7 +125,7 @@ public class Board {
 		
 		char chessPiece = board[coordinate.getFromY()][coordinate.getFromX()];
 		chessPiece =  toLower(chessPiece);
-		System.out.println(chessPiece);
+		
 		
 		if(chessPiece == 'p')return isPawnMove(coordinate);
 		if(chessPiece == 'r')return isRookMove(coordinate);
@@ -136,18 +137,6 @@ public class Board {
 		return false;
 		
 	}
-
-	
-
-
-
-	
-
-
-
-	
-
-
 
 	
 
@@ -215,9 +204,6 @@ public class Board {
 
 
 
-	
-
-
 
 	private void moveChessPiece(Coordinates coordinate, char chessPiece) {
 		
@@ -233,6 +219,31 @@ public class Board {
 		
 	}
 
+	public boolean isWin() {
+		if(isBlackWin()) return true;
+		if(isWhiteWin()) return true;
+		return false;
+	}
+
+
+	private boolean isBlackWin() {
+		for (Character character : whitePieceGraveyard) {
+			 if(character.equals('k')) {
+				 System.out.println("BLACK IS WIN!!!");
+				 return true;
+			 }
+		}
+		return false;
+	}
+	private boolean isWhiteWin() {
+		for (Character character : blackPieceGraveyard) {
+			 if(character.equals('K')) {
+				 System.out.println("WHITE IS WIN!!!");
+				 return true;
+			 }
+		}
+		return false;
+	}
 
 
 	private char toLower(char letter) {

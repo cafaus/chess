@@ -1,16 +1,14 @@
 package chess;
 
 /**
- * 
- * 
  *	TODO
- *check
+ *
+ *castling
  *bishop behavior
  *queen behavior
  *king behavior
- *win condition
- *draw condition
- *lose condition 
+ *check
+ *check king always in safe position
  */
 public class ChessPieceBehaviors {
 	private boolean isWhiteMove;
@@ -212,5 +210,7 @@ public class ChessPieceBehaviors {
 		//TODO kalo move nya sesuai sma behavior chess piece nya maka  return true kalo salah return false
 		return false;
 	}
+	
+	
 }
 	

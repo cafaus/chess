@@ -229,7 +229,7 @@ public class Board {
 	private boolean isBlackWin() {
 		for (Character character : whitePieceGraveyard) {
 			 if(character.equals('k')) {
-				 System.out.println("BLACK IS WIN!!!");
+				 System.out.println("0-1");
 				 return true;
 			 }
 		}
@@ -238,7 +238,7 @@ public class Board {
 	private boolean isWhiteWin() {
 		for (Character character : blackPieceGraveyard) {
 			 if(character.equals('K')) {
-				 System.out.println("WHITE IS WIN!!!");
+				 System.out.println("1-0");
 				 return true;
 			 }
 		}

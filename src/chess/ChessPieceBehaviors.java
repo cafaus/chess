@@ -9,6 +9,7 @@ package chess;
  *king behavior
  *check
  *check king always in safe position
+ *algebraic notation
  */
 public class ChessPieceBehaviors {
 	private boolean isWhiteMove;

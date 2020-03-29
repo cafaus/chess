@@ -2,7 +2,7 @@ package chess;
 
 public class Coordinates {
 	private int fromX,fromY, toX, toY;
-	private int leftBoundary, rightBoundary, topBoundary, bottomBoundary;
+	private int  topBoundary, bottomBoundary;
 
 	public int getFromX() {
 		return fromX;
@@ -12,21 +12,7 @@ public class Coordinates {
 		this.fromX = fromX;
 	}
 
-	public int getLeftBoundary() {
-		return leftBoundary;
-	}
-
-	public void setLeftBoundary(int leftBoundary) {
-		this.leftBoundary = leftBoundary;
-	}
-
-	public int getRightBoundary() {
-		return rightBoundary;
-	}
-
-	public void setRightBoundary(int rightBoundary) {
-		this.rightBoundary = rightBoundary;
-	}
+	
 
 	public int getTopBoundary() {
 		return topBoundary;

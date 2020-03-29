@@ -3,11 +3,14 @@ package chess;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.sun.org.apache.xml.internal.dtm.ref.CoroutineManager;
+
 
 public class Board {
 	char[][] board;
 	boolean isWhiteMove = true;
+	boolean isWhiteKingAndRookNeverMove = true;
+	boolean isBlackKingAndRookNeverMove = true;
+	boolean isKingSafe = true;
 	ArrayList<Character> whitePieceGraveyard;
 	ArrayList<Character> blackPieceGraveyard;
 	ChessPieceBehaviors chessPieceBehavior;
@@ -15,7 +18,6 @@ public class Board {
 		board = new char[8][8];
 		whitePieceGraveyard = new ArrayList<Character>();
 		blackPieceGraveyard = new ArrayList<Character>();
-		
 		intializeBoard();
 	}
 
@@ -45,7 +47,6 @@ public class Board {
 	}
 
 
-
 	private char isWhiteTileOrBlackTile(int i, int j) {
 		char whiteTile = '-';
 		char blackTile = '+';
@@ -73,19 +74,23 @@ public class Board {
 	public void doTurn() throws Exception {
 		
 		chessPieceBehavior = new ChessPieceBehaviors(isWhiteMove);
+		CheckBehaviors checkBehaviors = new CheckBehaviors();
 		Scanner scan = new Scanner(System.in);
 		
-		String input;
 		Coordinates coordinate = new Coordinates();
-		
+		String input;
 		
 		String turn = isWhiteMove ? "White" : "Black";
+		if(!checkBehaviors.isKingSafe(board, isWhiteMove)) {
+			isKingSafe = false;
+			System.out.println("CHECK!!. please move your king!!");
+		}
 		
 		System.out.println(turn + "Turn!!");
-		
 		System.out.println("insert move (from-to):..(CAPITAL ALPHABET) ex= A1-B2");
 		input = scan.nextLine();
 		if(input.length() != 5) throw new Exception("Invalid Move: length must be 5!!");
+		
 		
 		char fromIndexZero = input.charAt(0);
 		char fromIndexOne = input.charAt(1);
@@ -113,8 +118,7 @@ public class Board {
 			throw new Exception("Invalid Move: you should pick a " + whoShouldMove + " piece!!");
 		}
 		
-		if(!doMove(coordinate)) throw new Exception("invalid Move: doesn't fit the chess piece behavior!!!");
-
+		if(!doMove(coordinate)) throw new Exception("invalid Move: ");
 		isWhiteMove = isWhiteMove ? false : true;
 		
 	}
@@ -126,7 +130,10 @@ public class Board {
 		char chessPiece = board[coordinate.getFromY()][coordinate.getFromX()];
 		chessPiece =  toLower(chessPiece);
 		
-		
+		if(!isKingSafe && chessPiece != 'k') {
+			System.out.println("Your King is in danger. please move your king ");
+			return false;
+		}
 		if(chessPiece == 'p')return isPawnMove(coordinate);
 		if(chessPiece == 'r')return isRookMove(coordinate);
 		if(chessPiece == 'n')return isKnightMove(coordinate);
@@ -148,7 +155,14 @@ public class Board {
 	}
 
 	private boolean isRookMove(Coordinates coordinate) {
-		if(chessPieceBehavior.isRookBehavior(coordinate, board)) return validateCaptureChessPiece(coordinate, 'r');
+		if(chessPieceBehavior.isRookBehavior(coordinate, board)) {
+			if(validateCaptureChessPiece(coordinate, 'r')) {
+				if(isWhiteMove) isWhiteKingAndRookNeverMove = false;
+				else isBlackKingAndRookNeverMove = false;
+				
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -161,17 +175,105 @@ public class Board {
 		if(chessPieceBehavior.isBishopBehavior(coordinate, board)) return validateCaptureChessPiece(coordinate, 'b');
 		return false;
 	}
+	
 	private boolean isQueenMove(Coordinates coordinate) {
 		if(chessPieceBehavior.isQueenBehavior(coordinate, board)) return validateCaptureChessPiece(coordinate, 'q');
 		return false;
 	}
+	
 	private boolean isKingMove(Coordinates coordinate) {
-		if(chessPieceBehavior.isKingBehavior(coordinate, board)) return validateCaptureChessPiece(coordinate, 'k');
+		CheckBehaviors checkBehavior = new CheckBehaviors();
+		if(chessPieceBehavior.isKingBehavior(coordinate, board)) {
+			
+			if(isWhiteMove) {
+				if(checkBehavior.isWhiteKingSafe(board, coordinate.getToY(), coordinate.getToX()) && validateCaptureChessPiece(coordinate, 'k')) {
+					isWhiteKingAndRookNeverMove = false;
+					isKingSafe = true;
+					return true;
+				}
+			}
+			else {
+				if(checkBehavior.isBlackKingSafe(board, coordinate.getToY(), coordinate.getToX()) && validateCaptureChessPiece(coordinate, 'k')) {
+					isBlackKingAndRookNeverMove = false;
+					isKingSafe = true;
+					return true;
+				}
+			}
+		}
+		if(chessPieceBehavior.isCastling(coordinate, board, isKingSafe, isWhiteKingAndRookNeverMove, isBlackKingAndRookNeverMove)) {
+			
+			if(isWhiteMove) {
+				if(checkBehavior.isWhiteKingSafe(board, coordinate.getToY(), coordinate.getToX())) {
+					isWhiteKingAndRookNeverMove = false;
+					isKingSafe = true;
+					doWhiteKingCastling(coordinate);
+					return true;
+				}
+			}
+			else {
+				if(checkBehavior.isBlackKingSafe(board, coordinate.getToY(), coordinate.getToX()) && validateCaptureChessPiece(coordinate, 'k')) {
+					isBlackKingAndRookNeverMove = false;
+					isKingSafe = true;
+					doBlackKingCastling(coordinate);
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
 
+
+
+	private void doWhiteKingCastling(Coordinates coordinate) {
+		if(coordinate.getToY() == 7 && coordinate.getToX() == 6) {
+			moveChessPiece(coordinate, 'k');
+			
+			Coordinates rookCoordinate = new Coordinates();
+			rookCoordinate.setFromY(7);
+			rookCoordinate.setFromX(7);
+			rookCoordinate.setToY(7);
+			rookCoordinate.setToX(5);
+			
+			moveChessPiece(rookCoordinate, 'r');
+		}
+		else {
+			moveChessPiece(coordinate, 'k');
+			
+			Coordinates rookCoordinate = new Coordinates();
+			rookCoordinate.setFromY(7);
+			rookCoordinate.setFromX(0);
+			rookCoordinate.setToY(7);
+			rookCoordinate.setToX(3);
+			
+			moveChessPiece(rookCoordinate, 'r');
+		}
+	}
 	
+	private void doBlackKingCastling(Coordinates coordinate) {
+		if(coordinate.getToY() == 0 && coordinate.getToX() == 6) {
+			moveChessPiece(coordinate, 'K');
+			
+			Coordinates rookCoordinate = new Coordinates();
+			rookCoordinate.setFromY(0);
+			rookCoordinate.setFromX(7);
+			rookCoordinate.setToY(0);
+			rookCoordinate.setToX(5);
+			
+			moveChessPiece(rookCoordinate, 'R');
+		}
+		else {
+			moveChessPiece(coordinate, 'K');
+			
+			Coordinates rookCoordinate = new Coordinates();
+			rookCoordinate.setFromY(0);
+			rookCoordinate.setFromX(0);
+			rookCoordinate.setToY(0);
+			rookCoordinate.setToX(3);
+			
+			moveChessPiece(rookCoordinate, 'R');
+		}
+	}
 
 
 
@@ -214,7 +316,8 @@ public class Board {
 
 
 	private void captureChessPiece(Coordinates coordinate, char chessPieceCapturer) {
-		blackPieceGraveyard.add(board[coordinate.getToY()][coordinate.getToX()]);
+		if(isWhiteMove)blackPieceGraveyard.add(board[coordinate.getToY()][coordinate.getToX()]);
+		else whitePieceGraveyard.add(board[coordinate.getToY()][coordinate.getToX()]);
 		moveChessPiece(coordinate, chessPieceCapturer);
 		
 	}

@@ -11,7 +11,7 @@ public class Board {
 	ArrayList<Character> whitePieceGraveyard;
 	ArrayList<Character> blackPieceGraveyard;
 	ChessPieceBehaviors chessPieceBehavior;
-	public Board() {
+	public Board() { 
 		board = new char[8][8];
 		whitePieceGraveyard = new ArrayList<Character>();
 		blackPieceGraveyard = new ArrayList<Character>();
@@ -138,9 +138,7 @@ public class Board {
 		
 	}
 
-	
-
-
+	 
 
 	private boolean isPawnMove(Coordinates coordinate) {
 		if(chessPieceBehavior.isPawnBehavior(coordinate, board))return validateCaptureChessPiece(coordinate, 'p');
@@ -194,7 +192,6 @@ public class Board {
 				return true;
 			}
 			else if(!chessPieceBehavior.isChessPiece(board, coordinate.getToY(), coordinate.getToX())){
-				
 				moveChessPiece(coordinate, blackChessPiece);
 				return true;
 			}
@@ -215,8 +212,7 @@ public class Board {
 
 	private void captureChessPiece(Coordinates coordinate, char chessPieceCapturer) {
 		blackPieceGraveyard.add(board[coordinate.getToY()][coordinate.getToX()]);
-		moveChessPiece(coordinate, chessPieceCapturer);
-		
+		moveChessPiece(coordinate, chessPieceCapturer);	
 	}
 
 	public boolean isWin() {

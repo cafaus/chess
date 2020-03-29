@@ -112,7 +112,6 @@ public class ChessPieceBehaviors {
 	}
 
 
-
 	private boolean isBetweenTheBoundary(Coordinates coordinate, int area1, int area2, int target) {
 		return target >= coordinate.getTopBoundary() &&  target <= coordinate.getBottomBoundary() && area1 == area2;
 	}
@@ -122,7 +121,7 @@ public class ChessPieceBehaviors {
 	public boolean isChessPiece(char[][] board,  int toY,int toX)  {
 		return isWhite(board[toY][toX]) || isBlack(board[toY][toX]);
 	}
-	
+	 
 	public boolean isWhite(char chessPiece) {
 		if(chessPiece < 'a' || chessPiece > 'z') return false;
 		return true;
@@ -177,14 +176,14 @@ public class ChessPieceBehaviors {
 			}
 			else {
 				if(isExistBetweenFromAndToInY(board, toY  ,fromY, toX))return false;
-			}
+			} 
 			return true;
 
 		}
 		
-		return false;
+		return false; 
 	}
-	
+	 
 	public boolean isKnightBehavior(Coordinates coordinate, char[][] board) {
 		int fromX = coordinate.getFromX();
 		int fromY = coordinate.getFromY();
@@ -199,16 +198,57 @@ public class ChessPieceBehaviors {
 	}
 	
 	public boolean isBishopBehavior(Coordinates coordinate, char[][] board) {
-		//TODO kalo move nya sesuai sma behavior chess piece nya maka  return true kalo salah return false
+		
+		int fromX = coordinate.getFromX();
+		int fromY = coordinate.getFromY();
+		int toX = coordinate.getToX();
+		int toY = coordinate.getToY();
+		
+		if(Math.abs(fromY - toY) == Math.abs(fromX - toX)){
+			if(fromY - toY > 0 && fromX - toX > 0 && !isExistOnDiagonalMove(coordinate,board,1,1)) return true;  //-1 -1
+			if(fromY - toY > 0 && fromX - toX < 0 && !isExistOnDiagonalMove(coordinate,board,1,-1)) return true;//-1  1
+			if(fromY - toY < 0 && fromX - toX > 0 && !isExistOnDiagonalMove(coordinate,board,-1,1)) return true; //  1 -1
+			if(fromY - toY < 0 && fromX - toX < 0 && !isExistOnDiagonalMove(coordinate,board,-1,-1)) return true;// 1  1 
+		}
+		
 		return false;
 	}
 	
-	public boolean isQueenBehavior(Coordinates coordinate, char[][] board){
-		//TODO kalo move nya sesuai sma behavior chess piece nya maka  return true kalo salah return false
+	public boolean isExistOnDiagonalMove(Coordinates coordinate, char[][] board, int yMovement, int xMovement){
+		int fromX = coordinate.getFromX();
+		int fromY = coordinate.getFromY();
+		int toX = coordinate.getToX();
+		int toY = coordinate.getToY();
+		int currXposition= fromX-xMovement;
+		int currYposition= fromY-yMovement;
+		
+		while(currXposition != toX && currYposition != toY){
+			if(board[currYposition][currXposition] != '+' && board[currYposition][currXposition] != '-' ){
+				return true;
+			}
+			currYposition-=yMovement;
+			currXposition-=xMovement;
+		}
+		
 		return false;
 	}
+	
+	
+	public boolean isQueenBehavior(Coordinates coordinate, char[][] board){
+		if(isRookBehavior(coordinate, board) || isBishopBehavior(coordinate, board)) return true;
+		return false;
+	}
+	
 	public boolean isKingBehavior(Coordinates coordinate, char[][] board){
-		//TODO kalo move nya sesuai sma behavior chess piece nya maka  return true kalo salah return false
+		int fromX = coordinate.getFromX();
+		int fromY = coordinate.getFromY();
+		int toX = coordinate.getToX();
+		int toY = coordinate.getToY();
+		
+		int differenceX = Math.abs(fromX-toX);
+		int differenceY = Math.abs(fromY-toY);
+		
+		if(differenceX < 2 && differenceY < 2) return true; 
 		return false;
 	}
 	

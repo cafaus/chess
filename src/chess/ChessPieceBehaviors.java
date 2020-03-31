@@ -193,110 +193,46 @@ public class ChessPieceBehaviors {
 		return false;
 	}
 	
-	public boolean isBishopBehavior(Coordinates coordinate, char[][] board) {
+public boolean isBishopBehavior(Coordinates coordinate, char[][] board) {
+		
 		int fromX = coordinate.getFromX();
 		int fromY = coordinate.getFromY();
 		int toX = coordinate.getToX();
 		int toY = coordinate.getToY();
 		
-		boolean fromXisSmallerThanToX =  fromX < toX ? true : false;
-		boolean fromYisSmallerThanToY =  fromY < toY ? true : false;
-		int differenceBetweenY = Math.abs(fromY - toY);
-		int differenceBetweenX = Math.abs(fromX - toX); 
-		
-		if(differenceBetweenY == differenceBetweenX){
-			if(isTopLeftDiagonal(fromYisSmallerThanToY,fromXisSmallerThanToX)) {
-				return checkTopLeftDiagonal(board, fromX, fromY, differenceBetweenY);
-			}
-			if(isTopRightDiagonal(fromYisSmallerThanToY,fromXisSmallerThanToX)) {
-				return checkTopRightDiagonal(board, fromX, fromY, differenceBetweenY);
-			}
-			if(isBottomRightDiagonal(fromYisSmallerThanToY, fromXisSmallerThanToX)) {
-				return checkBottomRightDiagonal(board, fromX, fromY, differenceBetweenY);
-			}
-			if(isBottomLeftDiagonal(fromYisSmallerThanToY, fromXisSmallerThanToX)) {
-				return checkBottomLeftDiagonal(board, fromX, fromY, differenceBetweenY);
-			}
+		if(Math.abs(fromY - toY) == Math.abs(fromX - toX)){
+			if(fromY - toY > 0 && fromX - toX > 0 && !isExistOnDiagonalMove(coordinate,board,1,1)) return true;  
+			if(fromY - toY > 0 && fromX - toX < 0 && !isExistOnDiagonalMove(coordinate,board,1,-1)) return true;
+			if(fromY - toY < 0 && fromX - toX > 0 && !isExistOnDiagonalMove(coordinate,board,-1,1)) return true; 
+			if(fromY - toY < 0 && fromX - toX < 0 && !isExistOnDiagonalMove(coordinate,board,-1,-1)) return true;
 		}
-						
+		
+		
 		return false;
 	}
-
-
-	private boolean checkBottomLeftDiagonal(char[][] board, int fromX, int fromY, int differenceBetweenY) {
-		int indexCheckerY = fromY;
-		int indexCheckerX = fromX;
-		for (int i = 1; i < differenceBetweenY; i++) {
-			++indexCheckerY;
-			--indexCheckerX;
-			
-			if(isChessPiece(board, indexCheckerY, indexCheckerX)) return false;
+	
+	public boolean isExistOnDiagonalMove(Coordinates coordinate, char[][] board, int yMovement, int xMovement){
+		int fromX = coordinate.getFromX();
+		int fromY = coordinate.getFromY();
+		int toX = coordinate.getToX();
+		int toY = coordinate.getToY();
+		int currXposition= fromX-xMovement;
+		int currYposition= fromY-yMovement;
+		
+		while(currXposition != toX && currYposition != toY){
+			if(board[currYposition][currXposition] != '+' && board[currYposition][currXposition] != '-' ){
+				return true;
+			}
+			currYposition-=yMovement;
+			currXposition-=xMovement;
 		}
-		return true;
-	}
-
-
-	private boolean checkBottomRightDiagonal(char[][] board, int fromX, int fromY, int differenceBetweenY) {
-		int indexCheckerY = fromY;
-		int indexCheckerX = fromX;
-		for (int i = 1; i < differenceBetweenY; i++) {
-			++indexCheckerY;
-			++indexCheckerX;
-			
-			if(isChessPiece(board, indexCheckerY, indexCheckerX)) return false;
-		}
-		return true;
-	}
-
-
-	private boolean checkTopRightDiagonal(char[][] board, int fromX, int fromY, int differenceBetweenY) {
-		int indexCheckerY = fromY;
-		int indexCheckerX = fromX;
-		for (int i = 1; i < differenceBetweenY; i++) {
-			--indexCheckerY;
-			++indexCheckerX;
-			
-			if(isChessPiece(board, indexCheckerY, indexCheckerX)) return false;
-		}
-		return true;
-	}
-
-
-	private boolean checkTopLeftDiagonal(char[][] board, int fromX, int fromY, int differenceBetweenY) {
-		int indexCheckerY = fromY;
-		int indexCheckerX = fromX;
-		for (int i = 1; i < differenceBetweenY; i++) {
-			--indexCheckerY;
-			--indexCheckerX;
-			
-			if(isChessPiece(board, indexCheckerY, indexCheckerX)) return false;
-		}
-		return true;
-	}
-
-
-	private boolean isBottomLeftDiagonal( boolean fromYisSmallerThanToY, boolean fromXisSmallerThanToX) {
-		return fromYisSmallerThanToY && !fromXisSmallerThanToX;
-	}
-
-
-	private boolean isBottomRightDiagonal(boolean fromYisSmallerThanToY, boolean fromXisSmallerThanToX) {
-		return fromYisSmallerThanToY && fromXisSmallerThanToX;
-	}
-
-
-	private boolean isTopRightDiagonal(boolean fromYisSmallerThanToY, boolean fromXisSmallerThanToX) {
-		return !fromYisSmallerThanToY && fromXisSmallerThanToX;
-	}
-
-
-	private boolean isTopLeftDiagonal(boolean fromYisSmallerThanToY, boolean fromXisSmallerThanToX) {
-		return !fromYisSmallerThanToY && !fromXisSmallerThanToX;
+		
+		return false;
 	}
 	
+	
 	public boolean isQueenBehavior(Coordinates coordinate, char[][] board){
-		if(isRookBehavior(coordinate, board)) return true;
-		if(isBishopBehavior(coordinate, board)) return true;
+		if(isRookBehavior(coordinate, board) || isBishopBehavior(coordinate, board)) return true;
 		return false;
 	}
 	

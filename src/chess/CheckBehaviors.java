@@ -49,7 +49,7 @@ public class CheckBehaviors {
 				else if(board[i][j] == 'B') isSafe = doBishopCaptureSimulation(board,kingY,kingX,i,j);
 				else if(board[i][j] == 'Q') isSafe = doQueenCaptureSimulation(board,kingY,kingX,i,j);
 				else if(board[i][j] == 'K') isSafe = doKingCaptureSimulation(kingY,kingX,i,j);
-				if(!isSafe)return false;
+				if(!isSafe) return false;
 			}
 		}
 		return isSafe;

@@ -117,13 +117,14 @@ public class Board {
 
 
 
-	private Coordinates doAlgebraicMoveNotation() {
+	private Coordinates doAlgebraicMoveNotation() throws Exception{
 		String input;
 		Scanner scan = new Scanner(System.in);
 		Coordinates coordinate = new Coordinates();
-		
-		// coding algebraic disini 
-		// dia bakal return class coordinate
+		System.out.println("insert move (Algebraic):");
+		input = scan.nextLine();
+		//cara buat:
+		//liat contoh doCoordinateMoveNotation
 		return coordinate;
 	}
 

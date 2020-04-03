@@ -79,13 +79,11 @@ public class Board {
 	}
 	
 	
-	public void doTurn(int chooseMoveNotation) throws Exception {
+	public void doTurn() throws Exception {
 		initializeFutureBoard(board);
 		chessPieceBehavior = new ChessPieceBehaviors(isWhiteMove);
 		Coordinates coordinate = new Coordinates();
 		CheckBehaviors checkBehaviors = new CheckBehaviors();
-		
-		String input;
 		
 		String turn = isWhiteMove ? "White" : "Black";
 		if(!checkBehaviors.isKingSafe(board, isWhiteMove)) {
@@ -95,14 +93,10 @@ public class Board {
 		else isKingSafe = true;
 		
 		System.out.println(turn + "Turn!!");
-		if(chooseMoveNotation == 1) {
-			coordinate = doAlgebraicMoveNotation();
-		}
-		else if(chooseMoveNotation == 2) {
-			coordinate = doCoordinateMoveNotation();
-		}
+
+		coordinate = doCoordinateMoveNotation();
 		
-		
+				
 		if(board[coordinate.getFromY()][coordinate.getFromX()] == '+' || board[coordinate.getFromY()][coordinate.getFromX()] == '-') {
 			throw new Exception("Invalid Move: choose a chess piece!!");
 		}
@@ -115,21 +109,7 @@ public class Board {
 		
 	}
 
-
-
-	private Coordinates doAlgebraicMoveNotation() throws Exception{
-		String input;
-		Scanner scan = new Scanner(System.in);
-		Coordinates coordinate = new Coordinates();
-		System.out.println("insert move (Algebraic):");
-		input = scan.nextLine();
-		//cara buat:
-		//liat contoh doCoordinateMoveNotation
-		return coordinate;
-	}
-
-
-
+	
 	private Coordinates doCoordinateMoveNotation() throws Exception {
 		String input;
 		Scanner scan = new Scanner(System.in);
@@ -166,8 +146,7 @@ public class Board {
 		
 		char chessPiece = board[coordinate.getFromY()][coordinate.getFromX()];
 		chessPiece =  toLower(chessPiece);
-		
-		
+				
 		if(chessPiece == 'p')return isPawnMove(coordinate);
 		if(chessPiece == 'r')return isRookMove(coordinate);
 		if(chessPiece == 'n')return isKnightMove(coordinate);

@@ -2,7 +2,12 @@ package chess;
 
 /**
  *	TODO
- *algebraic notation
+ *  en passant 
+ *  pawn promotion 
+ *  checkmate 
+ *  draw on stalemate 
+ *  position unit tests: test coverage min. 90% 
+ *  reduce code smells 
  */
 public class ChessPieceBehaviors {
 	private boolean isWhiteMove;

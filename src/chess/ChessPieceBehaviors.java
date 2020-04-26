@@ -2,7 +2,6 @@ package chess;
 
 /**
  *	TODO
- *  en passant 
  *  pawn promotion 
  *  checkmate 
  *  draw on stalemate 
@@ -12,7 +11,6 @@ package chess;
 public class ChessPieceBehaviors {
 	private boolean isWhiteMove;
 	
-	
 	public ChessPieceBehaviors() {}
 	public ChessPieceBehaviors(boolean isWhiteMove) {
 		this.isWhiteMove = isWhiteMove;
@@ -21,7 +19,7 @@ public class ChessPieceBehaviors {
 	
 	
 	
-	public boolean isPawnBehavior(Coordinates coordinate, char[][] board) {		
+	public boolean isPawnBehavior(Coordinates coordinate,Coordinates prevMovePieceCoordinate,char[][] board) {		
 		int fromY = coordinate.getFromY();
 		
 		if(isWhiteMove) {
@@ -34,7 +32,7 @@ public class ChessPieceBehaviors {
 				coordinate.setTopBoundary(fromY - 1);
 				coordinate.setBottomBoundary(fromY);
 				
-				if(validatePawnAfterFirstMove(coordinate, board, 1))return true;
+				if(validatePawnAfterFirstMove(coordinate,prevMovePieceCoordinate,board, 1))return true;
 			}	
 		}
 		else {
@@ -47,18 +45,18 @@ public class ChessPieceBehaviors {
 				coordinate.setTopBoundary(fromY );
 				coordinate.setBottomBoundary(fromY + 1);
 				
-				if (validatePawnAfterFirstMove(coordinate, board, -1)) return true;
+				if (validatePawnAfterFirstMove(coordinate,prevMovePieceCoordinate, board, -1)) return true;
 			}	
 		}
 		return false;
 	}
 
-
-
-	private boolean validatePawnAfterFirstMove(Coordinates coordinate, char[][] board, int oneTileForward) {
+	
+	private boolean validatePawnAfterFirstMove(Coordinates coordinate,Coordinates prevMoveCoordinate, char[][] board, int oneTileForward) {
 		int fromX = coordinate.getFromX();
 		int toX = coordinate.getToX();
 		int toY = coordinate.getToY();
+		if(captureChessPieceByEnpassant(coordinate,prevMoveCoordinate, board)) return true;
 		if(captureChessPieceDiagonal(coordinate, board,  oneTileForward)) return true;
 		if( isBetweenTheBoundary(coordinate, fromX, toX, toY) && !isChessPiece(board, toY, toX) ) return true;
 		return false;
@@ -81,7 +79,7 @@ public class ChessPieceBehaviors {
 		return false;
 	}
 
-
+	
 
 	private boolean isMoveOneTileForward(Coordinates coordinate, int OneTileForward) {
 		int fromX = coordinate.getFromX();
@@ -105,15 +103,52 @@ public class ChessPieceBehaviors {
 		int fromY = coordinate.getFromY();
 		int toX = coordinate.getToX();
 		int toY = coordinate.getToY();
-		
+	
 		if( (fromY - toY) == oneTileForward && Math.abs(fromX - toX) == 1 && isChessPiece(board,  toY, toX) )  {
 			return true;
 		}
 		return false;
 	}
 
+	protected boolean captureChessPieceByEnpassant(Coordinates coordinate,Coordinates prevMovePieceCoordinate, char[][] board) {
 
+		int fromX = coordinate.getFromX();
+		int fromY = coordinate.getFromY();
+		int toX = coordinate.getToX();
+		int toY = coordinate.getToY();
+	
+		if(Math.abs(fromY - toY) == 1 && Math.abs(fromX - toX) == 1 && validateEnpassant(coordinate,prevMovePieceCoordinate,board)){
+			return true;
+		}
+		return false;
+	}
+ 
+	private boolean validateEnpassant(Coordinates coordinate,Coordinates prevMovePieceCoordinate, char[][] board){
+		int fromX = coordinate.getFromX();
+		int fromY = coordinate.getFromY();
+		int toX= coordinate.getToX();
+		int prevOriginY =  prevMovePieceCoordinate.getPrevOriginY();
+		int prevPieceCurrPosY = prevMovePieceCoordinate.getPrevCurrPosY();
+		int prevPieceCurrPosX = prevMovePieceCoordinate.getPrevCurrPosX();
+		char prevMovedPiece= board[prevMovePieceCoordinate.getPrevCurrPosY()][prevMovePieceCoordinate.getPrevCurrPosX()];
+		int numOfStep= Math.abs(prevPieceCurrPosY-prevOriginY);
+		
+		if(isWhiteMove && fromY==3 && prevMovedPiece == 'P'){
+			if(prevPieceCurrPosY == 3 && (prevPieceCurrPosX == fromX-1 || prevPieceCurrPosX == fromX+1) && toX==prevPieceCurrPosX && numOfStep==2){
+				return true;
+			}
+		}else if(!isWhiteMove && fromY == 4 && prevMovedPiece == 'p'){
+			if(prevPieceCurrPosY == 4 && (prevPieceCurrPosX == fromX-1 || prevPieceCurrPosX == fromX+1) && toX==prevPieceCurrPosX && numOfStep==2){
+				return true;
+			}
+		}
+			
+		return false;
+	}
 
+	
+
+	
 	private boolean isBetweenTheBoundary(Coordinates coordinate, int area1, int area2, int target) {
 		return target >= coordinate.getTopBoundary() &&  target <= coordinate.getBottomBoundary() && area1 == area2;
 	}

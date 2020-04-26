@@ -3,6 +3,39 @@ package chess;
 public class Coordinates {
 	private int fromX,fromY, toX, toY;
 	private int  topBoundary, bottomBoundary;
+	private int prevOriginY,prevOriginX,prevCurrPosY, prevCurrPosX;
+	
+	public int getPrevOriginY() {
+		return prevOriginY;
+	}
+
+	public void setPrevOriginY(int prevOriginY) {
+		this.prevOriginY = prevOriginY;
+	}
+
+	public int getPrevOriginX() {
+		return prevOriginX;
+	}
+
+	public void setPrevOriginX(int prevOriginX) {
+		this.prevOriginX = prevOriginX;
+	}
+
+	public int getPrevCurrPosY() {
+		return prevCurrPosY;
+	}
+
+	public void setPrevCurrPosY(int prevCurrPosY) {
+		this.prevCurrPosY = prevCurrPosY;
+	}
+
+	public int getPrevCurrPosX() {
+		return prevCurrPosX;
+	}
+
+	public void setPrevCurrPosX(int prevCurrPosX) {
+		this.prevCurrPosX = prevCurrPosX;
+	}
 
 	public int getFromX() {
 		return fromX;

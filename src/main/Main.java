@@ -1,18 +1,18 @@
-package chess;
+package main;
 
+import game.Board;
 
 public class Main {
 	public Main() {
 		Board chessBoard =new Board();
 		
 		while(!chessBoard.isWin()) {
-
-			chessBoard.showBoard();
 			try {
-				chessBoard.doTurn();
+				chessBoard.play();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
+			
 		}
 	}
 

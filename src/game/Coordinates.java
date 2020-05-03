@@ -1,4 +1,4 @@
-package chess;
+package game;
 
 public class Coordinates {
 	private int fromX,fromY, toX, toY;

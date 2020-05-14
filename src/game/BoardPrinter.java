@@ -3,12 +3,13 @@ package game;
 import chessPiece.Square;
 
 public class BoardPrinter {
-	public void showBoard(Square[][]board) {
+	public void showBoard(Square[][] board) {
 		
 		for (int i = 0; i < 8; i++) {
-			
 			for (int j = 0; j < 8; j++) {
+				
 				if(board[i][j].getChessPieceId() == '0') {
+					
 					if(board[i][j].isWhiteTile()) System.out.print("-"+ " " + " ");
 					else System.out.print("+"+ " " + " ");
 				}

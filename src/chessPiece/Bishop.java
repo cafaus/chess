@@ -1,5 +1,6 @@
 package chessPiece;
 
+import game.Board;
 import game.Coordinates;
 import game.Tools;
 
@@ -10,13 +11,13 @@ public class Bishop extends ChessPiece{
 		
 	}
 	@Override
-	public boolean canMove(Coordinates coordinate, Square[][] board) {
+	public boolean canMove(Coordinates coordinate, Board board) {
 		if(behavior(coordinate, board) && validateCaptureChessPiece(coordinate, board)) return true;
 		else System.out.println("Invalid move for bishop");
 		return false;
 	}
 	
-	public boolean behavior(Coordinates coordinate, Square[][] board) {
+	public boolean behavior(Coordinates coordinate, Board board) {
 		Tools tools = new Tools();
 		int fromX = coordinate.getFromX();
 		int fromY = coordinate.getFromY();
@@ -37,6 +38,11 @@ public class Bishop extends ChessPiece{
 	@Override
 	public char getChessPieceId() {
 		return isWhitePiece() ? 'b' : 'B';
+	}
+	
+	@Override
+	public ChessPiece clone() throws CloneNotSupportedException {
+		return new Bishop(this.isWhitePiece());
 	}
 	
 	

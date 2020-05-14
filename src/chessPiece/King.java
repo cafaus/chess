@@ -1,9 +1,11 @@
 package chessPiece;
 
+
 import game.Board;
 import game.Castling;
 import game.CheckBehaviors;
 import game.Coordinates;
+import game.Game;
 
 public class King extends ChessPiece{
 
@@ -12,13 +14,13 @@ public class King extends ChessPiece{
 	}
 
 	@Override
-	public boolean canMove(Coordinates coordinate, Square[][] board) {
+	public boolean canMove(Coordinates coordinate, Board board) {
 		CheckBehaviors checkBehavior = new CheckBehaviors();
 		Castling castling = new Castling();
 		if(behavior(coordinate)) {
 			
-			if(Board.isWhiteMove()) {
-				if(!checkBehavior.isWhiteKingSafe(board, coordinate.getToY(), coordinate.getToX())) {
+			if(Game.isWhiteMove()) {
+				if(!checkBehavior.isWhiteKingSafe(board.getBoard(), coordinate.getToY(), coordinate.getToX())) {
 					System.out.println("your king is not safe if you move it there");
 					return false;
 				}
@@ -26,13 +28,13 @@ public class King extends ChessPiece{
 					System.out.println("Invalid move for king");
 					return false;
 				}
-				Board.setWhiteKingAndRookNeverMove(false);
-				Board.setKingSafe(true);
+				Game.setWhiteKingAndRookNeverMove(false);
+				Game.setKingSafe(true);
 				return true;
 				
 			}
 			else {
-				if(!checkBehavior.isBlackKingSafe(board, coordinate.getToY(), coordinate.getToX())) {
+				if(!checkBehavior.isBlackKingSafe(board.getBoard(), coordinate.getToY(), coordinate.getToX())) {
 					System.out.println("your king is not safe if you move it there");
 					return false;
 				}
@@ -40,28 +42,28 @@ public class King extends ChessPiece{
 					System.out.println("Invalid move for king");
 					return false;
 				}
-				Board.setBlackKingAndRookNeverMove(false); 
-				Board.setKingSafe(true);
+				Game.setBlackKingAndRookNeverMove(false); 
+				Game.setKingSafe(true);
 				return true;
 				
 			}
 		}
 		if(castling.isCastling(coordinate, board)) {
 			
-			if(Board.isWhiteMove()) {
-				if(checkBehavior.isWhiteKingSafe(board, coordinate.getToY(), coordinate.getToX()) ) {
-					Board.setWhiteKingAndRookNeverMove(false);
-					Board.setKingSafe(true);
-					castling.doWhiteKingCastling(coordinate);
+			if(Game.isWhiteMove()) {
+				if(checkBehavior.isWhiteKingSafe(board.getBoard(), coordinate.getToY(), coordinate.getToX()) ) {
+					Game.setWhiteKingAndRookNeverMove(false);
+					Game.setKingSafe(true);
+					castling.doWhiteKingCastling(coordinate,board);
 					return true;
 				}
 				return false;
 			}
 			else {
-				if(checkBehavior.isBlackKingSafe(board, coordinate.getToY(), coordinate.getToX())) {
-					Board.setBlackKingAndRookNeverMove(false);
-					Board.setKingSafe(true);
-					castling.doBlackKingCastling(coordinate);
+				if(checkBehavior.isBlackKingSafe(board.getBoard(), coordinate.getToY(), coordinate.getToX())) {
+					Game.setBlackKingAndRookNeverMove(false);
+					Game.setKingSafe(true);
+					castling.doBlackKingCastling(coordinate,board);
 					return true;
 				}
 				return false;
@@ -88,6 +90,13 @@ public class King extends ChessPiece{
 	public char getChessPieceId() {
 		return isWhitePiece() ? 'k' : 'K';
 	}
+
+	@Override
+	public ChessPiece clone() throws CloneNotSupportedException {
+		return new King(this.isWhitePiece());
+	}
+
+
 	
 
 	

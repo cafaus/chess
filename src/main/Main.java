@@ -1,12 +1,13 @@
 package main;
 
-import game.Board;
+
+import game.Game;
 
 public class Main {
 	public Main() {
-		Board chessBoard =new Board();
-		
+		Game chessBoard =new Game();
 		while(!chessBoard.isWin()) {
+			
 			try {
 				chessBoard.play();
 			} catch (Exception e) {

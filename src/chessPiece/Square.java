@@ -16,7 +16,15 @@ public class Square {
 	}
 	
 	public ChessPiece getChessPiece() {
-		return chessPiece;
+		ChessPiece chessPieceCopy = null;
+		try {
+			if (chessPiece == null) return null;
+			chessPieceCopy = chessPiece.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		
+		return chessPieceCopy;
 	}
 	
 	public void setChessPiece(ChessPiece chessPiece) {

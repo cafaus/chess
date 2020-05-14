@@ -3,22 +3,22 @@ package game;
 import chessPiece.Square;
 
 public class Tools {
-	public boolean isChessPieceExistBetweenFromAndToInY(Square[][] board, int from, int to, int X) {
+	public boolean isChessPieceExistBetweenFromAndToInY(Board board, int from, int to, int X) {
 		++from;
 		for (int i = from; i < to; i++) {
-			if(board[i][X].isChessPiece()) return true; 
+			if(board.getBoard()[i][X].isChessPiece()) return true; 
 		}
 		return false;
 	}
 
-	public boolean isChessPieceExistBetweenFromAndToInX(Square[][] board, int from, int to, int Y) {
+	public boolean isChessPieceExistBetweenFromAndToInX(Board board, int from, int to, int Y) {
 		++from;
 		for (int i = from; i < to; i++) {
-			if(board[Y][i].isChessPiece()) return true; 
+			if(board.getBoard()[Y][i].isChessPiece()) return true; 
 		}
 		return false;
 	}
-	public boolean isChessPieceExistOnDiagonalMove(Coordinates coordinate, Square[][] board, int yMovement, int xMovement){
+	public boolean isChessPieceExistOnDiagonalMove(Coordinates coordinate, Board board, int yMovement, int xMovement){
 		int fromX = coordinate.getFromX();
 		int fromY = coordinate.getFromY();
 		int toX = coordinate.getToX();
@@ -27,7 +27,7 @@ public class Tools {
 		int currYposition= fromY-yMovement;
 		
 		while(currXposition != toX && currYposition != toY){
-			if(board[currYposition][currXposition].isChessPiece() ){
+			if(board.getBoard()[currYposition][currXposition].isChessPiece() ){
 				return true;
 			}
 			currYposition-=yMovement;

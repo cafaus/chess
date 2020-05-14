@@ -1,5 +1,6 @@
 package chessPiece;
 
+import game.Board;
 import game.Coordinates;
 
 public class Knight extends ChessPiece{
@@ -8,7 +9,7 @@ public class Knight extends ChessPiece{
 	}
 
 	@Override
-	public boolean canMove(Coordinates coordinate, Square[][] board) {
+	public boolean canMove(Coordinates coordinate, Board board) {
 		if(behavior(coordinate) && validateCaptureChessPiece(coordinate, board)) return true;
 		else System.out.println("Invalid move for knight");
 		return false;
@@ -29,6 +30,11 @@ public class Knight extends ChessPiece{
 	@Override
 	public char getChessPieceId() {
 		return isWhitePiece() ? 'n' : 'N';
+	}
+
+	@Override
+	public ChessPiece clone() throws CloneNotSupportedException {
+		return new Knight(this.isWhitePiece());
 	}
 
 	

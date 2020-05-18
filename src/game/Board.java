@@ -17,93 +17,23 @@ public class Board {
 	private Square[][] board;
 	private Square[][] futureBoard;
 	
-	private ArrayList<ChessPiece> whitePieceGraveyard;
-	private ArrayList<ChessPiece> blackPieceGraveyard;
 	private ArrayList<Coordinates> prevMovePiece;
+	
+	private boolean isWhiteMove = true;
+	private boolean isWhiteKingAndRookNeverMove = true;
+	private boolean isBlackKingAndRookNeverMove = true;
+	private boolean isKingSafe = true;
+	
+	private boolean isWhiteWin = false;
+	private boolean isBlackWin = false;
 	
 	
 	public Board() { 
-		whitePieceGraveyard = new ArrayList<ChessPiece>();
-		blackPieceGraveyard = new ArrayList<ChessPiece>();
+
 		prevMovePiece = new ArrayList<Coordinates>();
 		board = new Square[8][8];
 		futureBoard = new Square[8][8];
 		intializeBoard();
-		
-	}
-	public Square[][] getBoard()  {
-		return copyBoard();
-	}
-	
-	private Square[][] copyBoard() {
-		Square[][] boardCopy = new Square[8][8]; 
-		
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				boardCopy[i][j] = new Square(board[i][j].getChessPiece(), board[i][j].isWhiteTile());
-			}
-		}
-		
-		return boardCopy;
-	}
-	
-	public void setBoard(Square[][] board) {
-		this.board = board;
-	}
-	
-	public void addPrevMovePiece(Coordinates coordinate) {
-		this.prevMovePiece.add(coordinate);
-	}
-	
-	protected Coordinates getPreviousMovedChessPiece(Coordinates coordinate){
-		
-		int lastMove = prevMovePiece.size();
-		if(lastMove == 0){
-			return coordinate;
-		}else{
-			lastMove = prevMovePiece.size()-1;
-		}
-		
-		int prevPieceOriginX = prevMovePiece.get(lastMove).getFromX();
-		int prevPieceOriginY = prevMovePiece.get(lastMove).getFromY();
-		int prevPieceCurrPosX = prevMovePiece.get(lastMove).getToX();
-		int prevPieceCurrPosY = prevMovePiece.get(lastMove).getToY();
-		coordinate.setPrevOriginY(prevPieceOriginY);
-		coordinate.setPrevOriginX(prevPieceOriginX);
-		coordinate.setPrevCurrPosY(prevPieceCurrPosY);
-		coordinate.setPrevCurrPosX(prevPieceCurrPosX);
-			
-		return coordinate;
-	}
-
-	
-	public ArrayList<ChessPiece> getWhitePieceGraveyard() {
-		ArrayList<ChessPiece> whitePieceGraveyardCopy = new ArrayList<>();
-	
-	for (ChessPiece chessPiece : whitePieceGraveyard) {
-		try {
-			whitePieceGraveyardCopy.add((ChessPiece) chessPiece.clone());
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	return whitePieceGraveyardCopy;
-		
-	}
-	
-	public ArrayList<ChessPiece> getBlackPieceGraveyard() {
-		ArrayList<ChessPiece> blackPieceGraveyardCopy = new ArrayList<>();
-	
-	for (ChessPiece chessPiece : blackPieceGraveyard) {
-		try {
-			blackPieceGraveyardCopy.add((ChessPiece) chessPiece.clone());
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	return blackPieceGraveyardCopy;
 		
 	}
 	
@@ -132,6 +62,7 @@ public class Board {
 		initializePawnToBoard(isWhitePiece);
 	}
 	
+	
 	private void initializeSquareToBoard() {
 		for (int i = 2; i < 6; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -139,6 +70,7 @@ public class Board {
 			}
 		}
 	}
+	
 	
 	private void initializePawnToBoard(boolean isWhitePiece) {
 		int rank = isWhitePiece ? 6 : 1;
@@ -149,7 +81,7 @@ public class Board {
 	}
 
 
-	protected boolean isWhiteTileOrBlackTile(int i, int j) {
+	private boolean isWhiteTileOrBlackTile(int i, int j) {
 		if(i % 2 == 0) {
 			if(j % 2 == 0) {
 				return true;
@@ -168,9 +100,105 @@ public class Board {
 		}
 	}
 	
+	public boolean isWhiteMove() {
+		return isWhiteMove;
+	}
+
 	
-	private void initializeFutureBoard() {
-		futureBoard = copyBoard();
+	public void setWhiteMove(boolean isWhiteMove) {
+		this.isWhiteMove = isWhiteMove;
+	}
+	
+	
+	public  boolean isWhiteKingAndRookNeverMove() {
+		return isWhiteKingAndRookNeverMove;
+	}
+
+	
+	public void setWhiteKingAndRookNeverMove(boolean isWhiteKingAndRookNeverMove) {
+		this.isWhiteKingAndRookNeverMove = isWhiteKingAndRookNeverMove;
+	}
+
+	
+	public boolean isBlackKingAndRookNeverMove() {
+		return isBlackKingAndRookNeverMove;
+	}
+
+	
+	public void setBlackKingAndRookNeverMove(boolean isBlackKingAndRookNeverMove) {
+		this.isBlackKingAndRookNeverMove = isBlackKingAndRookNeverMove;
+	}
+
+	
+	public boolean isKingSafe() {
+		return isKingSafe;
+	}
+
+	
+	public  void setKingSafe(boolean isKingSafe) {
+		this.isKingSafe = isKingSafe;
+	}
+	
+	public boolean isWhiteWin() {
+		return isWhiteWin;
+	}
+
+
+	public boolean isBlackWin() {
+		return isBlackWin;
+	}
+	
+	
+	
+	
+	public Square[][] getBoard()  {
+		return copyBoard();
+	}
+	
+	
+	private Square[][] copyBoard() {
+		Square[][] boardCopy = new Square[8][8]; 
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				boardCopy[i][j] = new Square(board[i][j].getChessPiece(), board[i][j].isWhiteTile());
+			}
+		}
+		return boardCopy;
+	}
+	
+	
+	public void setBoard(Square[][] board) {
+		this.board = board;
+	}
+	
+	
+	public void addPrevMovePiece(Coordinates coordinate) {
+		this.prevMovePiece.add(coordinate);
+	}
+	
+	
+	protected Coordinates getPreviousMovedChessPiece(Coordinates coordinate){
+		int lastMove = prevMovePiece.size();
+		
+		if(lastMove == 0){
+			return coordinate;
+		}
+		else{
+			lastMove = prevMovePiece.size()-1;
+		}
+		
+		int prevPieceOriginX = prevMovePiece.get(lastMove).getFromX();
+		int prevPieceOriginY = prevMovePiece.get(lastMove).getFromY();
+		int prevPieceCurrPosX = prevMovePiece.get(lastMove).getToX();
+		int prevPieceCurrPosY = prevMovePiece.get(lastMove).getToY();
+		
+		coordinate.setPrevOriginY(prevPieceOriginY);
+		coordinate.setPrevOriginX(prevPieceOriginX);
+		coordinate.setPrevCurrPosY(prevPieceCurrPosY);
+		coordinate.setPrevCurrPosX(prevPieceCurrPosX);
+			
+		return coordinate;
 	}
 	
 	
@@ -187,23 +215,43 @@ public class Board {
 		System.out.println("your king is in check");
 		return false;
 	}
+	
 
-
+	private void initializeFutureBoard() {
+		futureBoard = copyBoard();
+	}
+	
 	
 	public boolean captureChessPiece(Coordinates coordinate, boolean isWhiteMove) {
 		ChessPiece diedChessPiece = board[coordinate.getToY()][coordinate.getToX()].getChessPiece();
 		if(moveChessPiece(coordinate)) {
 			if(diedChessPiece.getChessPieceId() == 'P' || diedChessPiece.getChessPieceId() == 'p')return true;
 			
-			if(isWhiteMove) {blackPieceGraveyard.add(diedChessPiece);
+			if(isWhiteMove && diedChessPiece.getChessPieceId() == 'K') {
+				this.isWhiteWin = true;
 			}
-			else whitePieceGraveyard.add(diedChessPiece);
+			else if(!isWhiteMove && diedChessPiece.getChessPieceId() == 'k') {
+				this.isBlackWin = true;
+			}
 			return true;
 		}
 		return false;
 	}
 	
 	
-
+	public boolean captureChessPieceByEnpassant(Board board, Coordinates coordinate) { 
+		boolean isEnPassantSafe;
+		Square[][] boardCopy = new Square[8][8];
+		if(board.getBoard()[coordinate.getToY()][coordinate.getToX()].isChessPiece()) return false;
+		isEnPassantSafe=board.moveChessPiece(coordinate);
+		if(!isEnPassantSafe)return false;
+		
+			boardCopy = board.getBoard();
+			boardCopy[coordinate.getPrevCurrPosY()][coordinate.getPrevCurrPosX()].setChessPiece(null);
+			board.setBoard(boardCopy);
+			return true;
+		
+		
+	}
 	
 }

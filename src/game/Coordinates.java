@@ -1,9 +1,18 @@
 package game;
 
+import chessPiece.Bishop;
+import chessPiece.ChessPiece;
+import chessPiece.King;
+import chessPiece.Knight;
+import chessPiece.Pawn;
+import chessPiece.Queen;
+import chessPiece.Rook;
+
 public class Coordinates {
 	private int fromX,fromY, toX, toY;
-	private int  topBoundary, bottomBoundary;
+	private int topBoundary, bottomBoundary;
 	private int prevOriginY,prevOriginX,prevCurrPosY, prevCurrPosX;
+	private ChessPiece chessPiecePromote;
 	
 	public int getPrevOriginY() {
 		return prevOriginY;
@@ -85,6 +94,27 @@ public class Coordinates {
 
 	public void setToY(int toY) {
 		this.toY = toY;
+	}
+
+	public ChessPiece getChessPiecePromote() {
+		return chessPiecePromote;
+	}
+
+	public void setChessPiecePromote(ChessPiece chessPiecePromote) {
+		
+		
+		this.chessPiecePromote = chessPiecePromote;
+	}
+	public void SetChessPiecePromoteCharToObject (char id, boolean isWhitePiece) {
+		ChessPiece chessPiece = null;
+		if(id == 'P') chessPiece = new Pawn(isWhitePiece);
+		else if(id == 'R') chessPiece = new Rook(isWhitePiece);
+		else if(id == 'N') chessPiece = new Knight(isWhitePiece);
+		else if(id == 'B') chessPiece = new Bishop(isWhitePiece);
+		else if(id == 'Q') chessPiece = new Queen(isWhitePiece);
+		else if(id == 'K') chessPiece = new King(isWhitePiece);
+		
+		this.chessPiecePromote = chessPiece;
 	}
 	
 }

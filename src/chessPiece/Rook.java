@@ -2,7 +2,6 @@ package chessPiece;
 
 import game.Board;
 import game.Coordinates;
-import game.Game;
 import game.Tools;
 
 public  class Rook extends ChessPiece{
@@ -13,24 +12,13 @@ public  class Rook extends ChessPiece{
 	@Override
 	public boolean canMove(Coordinates coordinate, Board board) {
 		if(behavior(coordinate, board) && validateCaptureChessPiece(coordinate, board)) {
-			if(Game.isWhiteMove()) Game.setWhiteKingAndRookNeverMove(false);
-			else  Game.setBlackKingAndRookNeverMove(false);
+			if(board.isWhiteMove()) board.setWhiteKingAndRookNeverMove(false);
+			else  board.setBlackKingAndRookNeverMove(false);
 			return true;
 		}
-		else System.out.println("Invalid move for rook");
+
 		return false;
 	}
-	
-	@Override
-	public char getChessPieceId() {
-		return isWhitePiece() ? 'r' : 'R';
-	
-	}
-	@Override
-	public ChessPiece clone() throws CloneNotSupportedException {
-		return new Rook(this.isWhitePiece());
-	}
-		
 	
 	public boolean behavior(Coordinates coordinate, Board board) {
 		Tools tools = new Tools();
@@ -66,6 +54,22 @@ public  class Rook extends ChessPiece{
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public char getChessPieceId() {
+		return isWhitePiece() ? 'r' : 'R';
+	
+	}
+	
+	@Override
+	public ChessPiece clone() throws CloneNotSupportedException {
+		return new Rook(this.isWhitePiece());
+	}
+		
+	@Override
+	public String toString() {
+		return "rook";
 	}
 	
 

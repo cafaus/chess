@@ -12,7 +12,6 @@ public class Queen extends ChessPiece{
 	@Override
 	public boolean canMove(Coordinates coordinate, Board board) {
 		if(behavior(coordinate, board) && validateCaptureChessPiece(coordinate, board)) return true;
-		else System.out.println("Invalid move for queen");
 		return false;
 	}
 	public boolean behavior(Coordinates coordinate, Board board) {
@@ -29,5 +28,10 @@ public class Queen extends ChessPiece{
 	@Override
 	public ChessPiece clone() throws CloneNotSupportedException {
 		return new Queen(this.isWhitePiece());
+	}
+
+	@Override
+	public String toString() {
+		return "queen";
 	}
 }

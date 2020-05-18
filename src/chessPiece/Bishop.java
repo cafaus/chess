@@ -13,7 +13,6 @@ public class Bishop extends ChessPiece{
 	@Override
 	public boolean canMove(Coordinates coordinate, Board board) {
 		if(behavior(coordinate, board) && validateCaptureChessPiece(coordinate, board)) return true;
-		else System.out.println("Invalid move for bishop");
 		return false;
 	}
 	
@@ -34,6 +33,7 @@ public class Bishop extends ChessPiece{
 		
 		return false;
 	}
+
 	
 	@Override
 	public char getChessPieceId() {
@@ -44,9 +44,12 @@ public class Bishop extends ChessPiece{
 	public ChessPiece clone() throws CloneNotSupportedException {
 		return new Bishop(this.isWhitePiece());
 	}
+	@Override
+	public String toString() {
+		return "bishop";
+	}
 	
 	
-
 	
 
 }

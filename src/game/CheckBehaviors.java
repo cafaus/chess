@@ -5,6 +5,47 @@ import chessPiece.Square;
 public class CheckBehaviors {
 	
 	
+	public boolean isCheckMate(Board board) {
+		int checked = 0;
+		char king = board.isWhiteMove() ? 'k' : 'K';
+		int kingY = getKingCoordinateY(board.getBoard(), king);
+		int kingX = getKingCoordinateX(board.getBoard(), king);
+		
+		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY - 1, kingX)) checked++;
+		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY - 1, kingX + 1)) checked++;
+		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY, kingX + 1)) checked++;
+		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY + 1, kingX + 1)) checked++;
+		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY + 1, kingX)) checked++;
+		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY + 1, kingX - 1)) checked++;
+		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY , kingX - 1)) checked++;
+		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY - 1, kingX - 1)) checked++;
+		
+		
+		if(checked < 8) return false;
+		return true;
+	}
+
+	private boolean isKingMoveAreaSafe(Board board, int kingY, int kingX, int toY, int toX) {
+		Coordinates coordinate = new Coordinates();
+		Board boardObjCopy = new Board();
+		boardObjCopy.setBoard(board.getBoard());
+		Square[][] boardCopy = new Square[8][8];
+		
+		
+		coordinate.setFromY(kingY);
+		coordinate.setFromX(kingX);
+		
+		boardCopy = boardObjCopy.getBoard();
+		
+		coordinate.setToY(toY);
+		coordinate.setToX(toX);
+		
+		boardCopy[kingY][kingX].getChessPiece().canMove(coordinate, boardObjCopy);
+		
+		if(!isKingSafe(boardCopy, board.isWhiteMove())) return false;
+		return true;
+	}
+	
 	public boolean isKingSafe(Square[][] board, boolean isWhiteMove) {
 		int kingY = 0,kingX = 0;
 		

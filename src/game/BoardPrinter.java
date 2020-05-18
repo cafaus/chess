@@ -4,7 +4,6 @@ import chessPiece.Square;
 
 public class BoardPrinter {
 	public void showBoard(Square[][] board) {
-		
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				
@@ -22,8 +21,9 @@ public class BoardPrinter {
 		
 		showFile();
 	}
-
-
+	
+	
+	
 
 	private void showFile() {
 		char alphabet = 'A' - 1;

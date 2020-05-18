@@ -1,6 +1,6 @@
 package game;
 
-import chessPiece.Square;
+
 
 public class Tools {
 	public boolean isChessPieceExistBetweenFromAndToInY(Board board, int from, int to, int X) {
@@ -10,6 +10,7 @@ public class Tools {
 		}
 		return false;
 	}
+	
 
 	public boolean isChessPieceExistBetweenFromAndToInX(Board board, int from, int to, int Y) {
 		++from;
@@ -18,6 +19,8 @@ public class Tools {
 		}
 		return false;
 	}
+	
+	
 	public boolean isChessPieceExistOnDiagonalMove(Coordinates coordinate, Board board, int yMovement, int xMovement){
 		int fromX = coordinate.getFromX();
 		int fromY = coordinate.getFromY();
@@ -37,9 +40,12 @@ public class Tools {
 		return false;
 	}
 	
+	
 	public boolean isBetweenTheBoundary(Coordinates coordinate, int area1, int area2, int target) {
 		return target >= coordinate.getTopBoundary() &&  target <= coordinate.getBottomBoundary() && area1 == area2;
 	}
+	
+	
 	public boolean isOutside(char fromIndexZero, char c1, char c2) {
 		return fromIndexZero < c1 || fromIndexZero > c2;
 	}

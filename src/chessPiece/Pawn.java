@@ -21,6 +21,7 @@ public class Pawn extends ChessPiece{
 	public boolean behavior(Coordinates coordinate, Board board) {
 		int fromY = coordinate.getFromY();
 		int toY = coordinate.getToY();
+		int toX = coordinate.getToX();
 		if(board.isWhiteMove()) {
 			if(isPawnNeverMove(fromY,6)) {
 				coordinate.setTopBoundary(fromY - 2);
@@ -33,6 +34,7 @@ public class Pawn extends ChessPiece{
 				
 				if(isPawnPromotion(toY, fromY, board.isWhiteMove())) {
 					if(coordinate.getChessPiecePromote() == null) return false;
+					if(isMoveOneTileForward(coordinate, 1) && board.getBoard()[toY][toX].isChessPiece()) return false;
 					board.setBoard(changeChessPieceIntoPromotedChessPiece(board, coordinate));
 				}
 				if(validatePawnAfterFirstMove(coordinate,board, 1))return true;
@@ -50,6 +52,7 @@ public class Pawn extends ChessPiece{
 				
 				if(isPawnPromotion(toY, fromY, board.isWhiteMove())) {
 					if(coordinate.getChessPiecePromote() == null) return false;
+					if(isMoveOneTileForward(coordinate, -1) && board.getBoard()[toY][toX].isChessPiece()) return false;
 					board.setBoard(changeChessPieceIntoPromotedChessPiece(board, coordinate));
 				}
 				if (validatePawnAfterFirstMove(coordinate,board, -1)) return true;
@@ -71,11 +74,11 @@ public class Pawn extends ChessPiece{
 		return new Pawn(this.isWhitePiece());
 	}
 	
-	
 	@Override
 	public String toString() {
 		return "pawn";
 	}
+	
 	private boolean validatePawnOnFirstMove(Coordinates coordinate, Board board,int oneTileForward) {
 		int fromX = coordinate.getFromX();
 		int fromY = coordinate.getFromY();
@@ -138,8 +141,9 @@ public class Pawn extends ChessPiece{
 		int prevOriginY =  coordinate.getPrevOriginY();
 		int prevPieceCurrPosY = coordinate.getPrevCurrPosY();
 		int prevPieceCurrPosX = coordinate.getPrevCurrPosX();
-		Square prevMovedPiece= board.getBoard()[coordinate.getPrevCurrPosY()][coordinate.getPrevCurrPosX()];
+		Square prevMovedPiece= board.getBoard()[prevPieceCurrPosY][prevPieceCurrPosX];
 		int numOfStep= Math.abs(prevPieceCurrPosY-prevOriginY);
+		
 		if(board.getBoard()[fromY][fromX].isWhitePiece() && fromY==3 && prevMovedPiece.getChessPiece().getChessPieceId() == 'P'){
 			if(prevPieceCurrPosY == 3 && (prevPieceCurrPosX == fromX-1 || prevPieceCurrPosX == fromX+1) && toX==prevPieceCurrPosX && numOfStep==2){
 				return true;
@@ -167,7 +171,7 @@ public class Pawn extends ChessPiece{
 		int toX = coordinate.getToX();
 		int toY = coordinate.getToY();
 	
-		if( (fromY - toY) == oneTileForward && Math.abs(fromX - toX) == 1 && board.getBoard()[toY][toX].isChessPiece())  {
+		if((fromY - toY) == oneTileForward && Math.abs(fromX - toX) == 1 && board.getBoard()[toY][toX].isChessPiece())  {
 			return true;
 		}
 		return false;
@@ -176,12 +180,12 @@ public class Pawn extends ChessPiece{
 	
 	private boolean isPawnPromotion(int toY, int fromY, boolean isWhiteMove) {
 		if(isWhiteMove) {
-			if(toY != 0 && fromY != 1) return false;
+			if(toY == 0 && fromY == 1) return true;
 		}
 		else {
-			if(toY != 7 && fromY != 6) return false;
+			if(toY == 7 && fromY == 6) return true;
 		}
-		return true;
+		return false;
 	}
 	
 	

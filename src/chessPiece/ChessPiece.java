@@ -19,27 +19,23 @@ public abstract class ChessPiece {
 	public abstract String toString();
 	
 
-	// ada if yang harus di reduce(line401-406 dan case untuk Piece oppositenya)
-	protected boolean validateCaptureChessPiece(Coordinates coordinate, Board board) {
+		
+	public boolean validateCaptureChessPiece(Coordinates coordinate, Board board) {
 		if(board.getBoard()[coordinate.getFromY()][coordinate.getFromX()].isWhitePiece()) {
-			if(board.getBoard()[coordinate.getToY()][coordinate.getToX()].isBlackPiece()) {
-				return board.captureChessPiece(coordinate, board.isWhiteMove());
-			}
-			else if(!board.getBoard()[coordinate.getToY()][coordinate.getToX()].isChessPiece()){
-				return board.moveChessPiece(coordinate);
+			if((board.getBoard()[coordinate.getToY()][coordinate.getToX()].isBlackPiece() || !board.getBoard()[coordinate.getToY()][coordinate.getToX()].isChessPiece()) && board.isChessPieceCanMove(coordinate)) {
+				board.moveChessPiece(coordinate);
+				return true;
 			}
 		}
 		else if(board.getBoard()[coordinate.getFromY()][coordinate.getFromX()].isBlackPiece()){
-			if(board.getBoard()[coordinate.getToY()][coordinate.getToX()].isWhitePiece()) {
-				return board.captureChessPiece(coordinate, board.isWhiteMove());
+			if((board.getBoard()[coordinate.getToY()][coordinate.getToX()].isWhitePiece() || !board.getBoard()[coordinate.getToY()][coordinate.getToX()].isChessPiece()) && board.isChessPieceCanMove(coordinate)) {
+				board.moveChessPiece(coordinate);
+				return true;
 			}
-			else if(!board.getBoard()[coordinate.getToY()][coordinate.getToX()].isChessPiece()){
-				return board.moveChessPiece(coordinate);
-			}
+
 		}
 		return false;
 	}
-	
 
 	
 	protected boolean isWhitePiece() {

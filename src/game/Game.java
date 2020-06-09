@@ -8,7 +8,7 @@ import chessPiece.ChessPiece;
 public class Game {
 	private static Board board;
 	public Game() { 
-		board = new Board();
+		board = new Board(true,true,true,true);
 		
 	}
 	
@@ -49,7 +49,7 @@ public class Game {
 	  
 	private Coordinates doCoordinateMoveNotation() throws Exception {
 		String input = new String();
-		String chessPiece = new String("PRNBQ");
+		String chessPiece = new String("RNBQ"); // pawn must be remove
 		Scanner scan = new Scanner(System.in);
 		Coordinates coordinate = new Coordinates();
 		Tools tools = new Tools();
@@ -79,19 +79,16 @@ public class Game {
 			if(tools.isOutside(toIndexOne, '1', '8')) throw new Exception("Invalid Move: fifth character!!!");
 			for (int i = 0; i < chessPiece.length(); i++) {
 				if(input.charAt(5) == chessPiece.charAt(i)) break;
-				if(i == 5)throw new Exception("Invalid Move: promotion character!!!");
+				if(i == 4)throw new Exception("Invalid Move: promotion character!!!");
 			}
 			coordinate.SetChessPiecePromoteCharToObject(input.charAt(5), board.isWhiteMove());
 		}
 			
-		
 		coordinate.setFromX(fromIndexZero - 65);
 		coordinate.setFromY(7 - (fromIndexOne - 49));
-		
 		coordinate.setToX(toIndexZero - 65);
 		coordinate.setToY(7 - (toIndexOne - 49));
-		
-		
+			
 		return coordinate;
 	}
 
@@ -108,30 +105,33 @@ public class Game {
 	}
 
 	
-	public boolean isWin() {
+	public boolean isGameOver() {
 		BoardPrinter boardPrinter = new BoardPrinter();
 		if(isBlackWin()) {
 			boardPrinter.showBoard(board.getBoard());
-			System.out.println("0-1");
+			System.out.println("0-1 (BlackWin)");
 			
 			return true;
 		}
 		if(isWhiteWin()) {
 			boardPrinter.showBoard(board.getBoard());
-			System.out.println("1-0");
+			System.out.println("1-0 (WhiteWin)");
 			
 			return true;
 		}
+		if(isEndedDraw()){
+			boardPrinter.showBoard(board.getBoard());
+			System.out.println("1/2-1/2 (Draw)");
+			return true;
+		}	
 		return false;
 	}
-
 
 	private boolean isBlackWin() {
 		CheckBehaviors checkBehaviors = new CheckBehaviors();
 		
-		if(board.isBlackWin()) return true;
-		if(board.isWhiteMove() && checkBehaviors.isCheckMate(board)) {
-			System.out.println("CHECEKMATE!!!!!!!");
+		if(board.isWhiteMove() && checkBehaviors.isCheckMate(board)) { 
+			System.out.println("CHECKMATE!!!!!!!");
 			return true;
 		}
 		return false;
@@ -141,9 +141,18 @@ public class Game {
 	private boolean isWhiteWin() {
 		CheckBehaviors checkBehaviors = new CheckBehaviors();
 		
-		if(board.isWhiteWin()) return true;
-		if(!board.isWhiteMove() && checkBehaviors.isCheckMate(board)) {
-			System.out.println("CHECEKMATE!!!!!!!");
+		if(!board.isWhiteMove() && checkBehaviors.isCheckMate(board)) {	
+			System.out.println("CHECKMATE!!!!!!!");
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean isEndedDraw(){
+		CheckBehaviors checkBehaviors = new CheckBehaviors();
+		StalemateBehaviors stalemateBehavior= new StalemateBehaviors();
+		if(checkBehaviors.isKingSafe(board.getBoard(), board.isWhiteMove()) && stalemateBehavior.isDrawOnStalemate(board)) {	
+			System.out.println("game ended (stalemate)!!!!!!!");
 			return true;
 		}
 		return false;

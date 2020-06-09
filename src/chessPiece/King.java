@@ -38,7 +38,6 @@ public class King extends ChessPiece{
 			}
 			else {
 				if(!checkBehavior.isBlackKingSafe(board.getBoard(), coordinate.getToY(), coordinate.getToX())) {
-					
 					return false;
 				}
 				if(!validateCaptureChessPiece(coordinate, board)) {
@@ -52,6 +51,7 @@ public class King extends ChessPiece{
 				
 			}
 		}
+		
 		if(isCastling(coordinate, board)) {
 			
 			if(board.isWhiteMove()) {

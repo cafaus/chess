@@ -19,17 +19,16 @@ public class Board {
 	
 	private ArrayList<Coordinates> prevMovePiece;
 	
-	private boolean isWhiteMove = true;
-	private boolean isWhiteKingAndRookNeverMove = true;
-	private boolean isBlackKingAndRookNeverMove = true;
-	private boolean isKingSafe = true;
+	private boolean isWhiteMove;
+	private boolean isWhiteKingAndRookNeverMove;
+	private boolean isBlackKingAndRookNeverMove;
+	private boolean isKingSafe;
 	
-	private boolean isWhiteWin = false;
-	private boolean isBlackWin = false;
-	
-	
-	public Board() { 
-
+	public Board(boolean isWhiteMove, boolean isWhiteKingAndRookNeverMove, boolean isBlackKingAndRookNeverMove, boolean isKingSafe) { 
+		this.isWhiteMove = isWhiteMove;
+		this.isWhiteKingAndRookNeverMove = isWhiteKingAndRookNeverMove;
+		this.isBlackKingAndRookNeverMove = isBlackKingAndRookNeverMove;
+		this.isKingSafe = isKingSafe;
 		prevMovePiece = new ArrayList<Coordinates>();
 		board = new Square[8][8];
 		futureBoard = new Square[8][8];
@@ -38,8 +37,7 @@ public class Board {
 	}
 	
 	
-	private void intializeBoard() {
-		
+	private void intializeBoard() {	
 		boolean isWhitePiece = true;
 		
 		intializePieceToBoard(!isWhitePiece);
@@ -74,8 +72,7 @@ public class Board {
 	
 	private void initializePawnToBoard(boolean isWhitePiece) {
 		int rank = isWhitePiece ? 6 : 1;
-		for (int i = 0; i < 8; i++) {
-			
+		for (int i = 0; i < 8; i++) {		
 			board[rank][i] = new Square(new Pawn(isWhitePiece), isWhiteTileOrBlackTile(rank, i));
 		}
 	}
@@ -139,18 +136,6 @@ public class Board {
 		this.isKingSafe = isKingSafe;
 	}
 	
-	public boolean isWhiteWin() {
-		return isWhiteWin;
-	}
-
-
-	public boolean isBlackWin() {
-		return isBlackWin;
-	}
-	
-	
-	
-	
 	public Square[][] getBoard()  {
 		return copyBoard();
 	}
@@ -201,41 +186,25 @@ public class Board {
 		return coordinate;
 	}
 	
-	
-	public  boolean moveChessPiece(Coordinates coordinate) {
+	public boolean isChessPieceCanMove(Coordinates coordinate) {
 		CheckBehaviors checkBehaviors = new CheckBehaviors();
 		initializeFutureBoard();
 		futureBoard[coordinate.getToY()][coordinate.getToX()].setChessPiece(board[coordinate.getFromY()][coordinate.getFromX()].getChessPiece());
 		futureBoard[coordinate.getFromY()][coordinate.getFromX()].setChessPiece(null);
-		if(checkBehaviors.isKingSafe(futureBoard, board[coordinate.getFromY()][coordinate.getFromX()].isWhitePiece())) {
-			board[coordinate.getToY()][coordinate.getToX()].setChessPiece(board[coordinate.getFromY()][coordinate.getFromX()].getChessPiece());
-			board[coordinate.getFromY()][coordinate.getFromX()].setChessPiece(null);
-			return true;
+		if(!checkBehaviors.isKingSafe(futureBoard, board[coordinate.getFromY()][coordinate.getFromX()].isWhitePiece())) {
+			System.out.println("your king is in check");
+			return false;
 		}
-		System.out.println("your king is in check");
-		return false;
+		return true;
 	}
 	
+	public void moveChessPiece(Coordinates coordinate) {
+		board[coordinate.getToY()][coordinate.getToX()].setChessPiece(board[coordinate.getFromY()][coordinate.getFromX()].getChessPiece());
+		board[coordinate.getFromY()][coordinate.getFromX()].setChessPiece(null);
+	}
 
 	private void initializeFutureBoard() {
 		futureBoard = copyBoard();
-	}
-	
-	
-	public boolean captureChessPiece(Coordinates coordinate, boolean isWhiteMove) {
-		ChessPiece diedChessPiece = board[coordinate.getToY()][coordinate.getToX()].getChessPiece();
-		if(moveChessPiece(coordinate)) {
-			if(diedChessPiece.getChessPieceId() == 'P' || diedChessPiece.getChessPieceId() == 'p')return true;
-			
-			if(isWhiteMove && diedChessPiece.getChessPieceId() == 'K') {
-				this.isWhiteWin = true;
-			}
-			else if(!isWhiteMove && diedChessPiece.getChessPieceId() == 'k') {
-				this.isBlackWin = true;
-			}
-			return true;
-		}
-		return false;
 	}
 	
 	
@@ -243,15 +212,14 @@ public class Board {
 		boolean isEnPassantSafe;
 		Square[][] boardCopy = new Square[8][8];
 		if(board.getBoard()[coordinate.getToY()][coordinate.getToX()].isChessPiece()) return false;
-		isEnPassantSafe=board.moveChessPiece(coordinate);
+		isEnPassantSafe=board.isChessPieceCanMove(coordinate);
 		if(!isEnPassantSafe)return false;
 		
-			boardCopy = board.getBoard();
-			boardCopy[coordinate.getPrevCurrPosY()][coordinate.getPrevCurrPosX()].setChessPiece(null);
-			board.setBoard(boardCopy);
-			return true;
-		
-		
+		board.moveChessPiece(coordinate);
+		boardCopy = board.getBoard();
+		boardCopy[coordinate.getPrevCurrPosY()][coordinate.getPrevCurrPosX()].setChessPiece(null);
+		board.setBoard(boardCopy);
+		return true;	
 	}
 	
 }

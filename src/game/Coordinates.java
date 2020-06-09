@@ -101,19 +101,16 @@ public class Coordinates {
 	}
 
 	public void setChessPiecePromote(ChessPiece chessPiecePromote) {
-		
-		
 		this.chessPiecePromote = chessPiecePromote;
 	}
+	
 	public void SetChessPiecePromoteCharToObject (char id, boolean isWhitePiece) {
-		ChessPiece chessPiece = null;
-		if(id == 'P') chessPiece = new Pawn(isWhitePiece);
-		else if(id == 'R') chessPiece = new Rook(isWhitePiece);
+		ChessPiece chessPiece = null;   
+		if(id == 'R') chessPiece = new Rook(isWhitePiece);
 		else if(id == 'N') chessPiece = new Knight(isWhitePiece);
 		else if(id == 'B') chessPiece = new Bishop(isWhitePiece);
 		else if(id == 'Q') chessPiece = new Queen(isWhitePiece);
-		else if(id == 'K') chessPiece = new King(isWhitePiece);
-		
+
 		this.chessPiecePromote = chessPiece;
 	}
 	

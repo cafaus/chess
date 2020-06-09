@@ -6,8 +6,7 @@ public class Square {
 	
 	public Square(ChessPiece chessPiece, boolean isWhiteTile) {
 		this.chessPiece = chessPiece;
-		this.isWhiteTile = isWhiteTile;
-		
+		this.isWhiteTile = isWhiteTile;		
 	}
 
 	public char getChessPieceId() {

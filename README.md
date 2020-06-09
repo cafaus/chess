@@ -12,7 +12,7 @@ project for code reengineering
 - [X] en passant
 - [X] pawn promotion
 - [X] checkmate
-- [ ] draw on stalemate position
+- [x] draw on stalemate position
 - [ ] unit tests: test coverage min. 90%
 - [ ] reduce code smells
 

@@ -28,16 +28,19 @@ public class Pawn extends ChessPiece{
 				coordinate.setBottomBoundary(fromY);
 				
 				if(validatePawnOnFirstMove(coordinate, board, 1)) return validateCaptureChessPiece(coordinate, board);
-			}else {
+			}else {//else ini isi nya gw ubah
 				coordinate.setTopBoundary(fromY - 1);
 				coordinate.setBottomBoundary(fromY);
 				
+				
 				if(isPawnPromotion(toY, fromY, board.isWhiteMove())) {
 					if(coordinate.getChessPiecePromote() == null) return false;
-					if(isMoveOneTileForward(coordinate, 1) && board.getBoard()[toY][toX].isChessPiece()) return false;
+					if(!validatePawnAfterFirstMove(coordinate,board, 1))return false;
+					
 					board.setBoard(changeChessPieceIntoPromotedChessPiece(board, coordinate));
-				}
-				if(validatePawnAfterFirstMove(coordinate,board, 1))return true;
+				}else return validatePawnAfterFirstMove(coordinate,board, 1);
+				return true;
+				
 			}	
 		}
 		else {
@@ -46,16 +49,16 @@ public class Pawn extends ChessPiece{
 				coordinate.setBottomBoundary(fromY + 2);
 				
 				if(validatePawnOnFirstMove(coordinate, board, -1)) return validateCaptureChessPiece(coordinate, board);
-			}else {
+			}else {//else ini isi nya gw ubah
 				coordinate.setTopBoundary(fromY );
 				coordinate.setBottomBoundary(fromY + 1);
 				
 				if(isPawnPromotion(toY, fromY, board.isWhiteMove())) {
 					if(coordinate.getChessPiecePromote() == null) return false;
-					if(isMoveOneTileForward(coordinate, -1) && board.getBoard()[toY][toX].isChessPiece()) return false;
+					if (!validatePawnAfterFirstMove(coordinate,board, -1)) return false;
 					board.setBoard(changeChessPieceIntoPromotedChessPiece(board, coordinate));
-				}
-				if (validatePawnAfterFirstMove(coordinate,board, -1)) return true;
+				} else return validatePawnAfterFirstMove(coordinate,board, -1);
+				return true;
 			}	
 		}
 		
@@ -89,7 +92,12 @@ public class Pawn extends ChessPiece{
 		if(captureChessPieceDiagonal(coordinate, board, oneTileForward)) return true;
 		if(isMoveOneTileForward(coordinate, oneTileForward) && !board.getBoard()[toY][toX].isChessPiece()) return true;
 		if(tools.isBetweenTheBoundary(coordinate, fromX, toX, toY) && !board.getBoard()[toY][toX].isChessPiece()) {
-			if(tools.isChessPieceExistBetweenFromAndToInY(board, toY  ,fromY, toX)) return false;
+			if(board.isWhiteMove()) {
+				if(tools.isChessPieceExistBetweenFromAndToInY(board, toY  ,fromY, toX)) return false;
+			}
+			else {
+				if(tools.isChessPieceExistBetweenFromAndToInY(board, fromY  ,toY, toX)) return false;
+			}
 			return true;
 		}
 		
@@ -189,14 +197,14 @@ public class Pawn extends ChessPiece{
 	}
 	
 	
-	private Square[][] changeChessPieceIntoPromotedChessPiece(Board board,Coordinates coordinate) {
-		int fromY = coordinate.getFromY();
-		int fromX = coordinate.getFromX();
+	private Square[][] changeChessPieceIntoPromotedChessPiece(Board board,Coordinates coordinate) {//isi nya gw ubah
+		int toY = coordinate.getToY();
+		int toX = coordinate.getToX();
 
 		
 		Square[][] boardCopy= new Square[8][8];
 		boardCopy = board.getBoard();
-		boardCopy[fromY][fromX].setChessPiece(coordinate.getChessPiecePromote());
+		boardCopy[toY][toX].setChessPiece(coordinate.getChessPiecePromote());
 		
 		return boardCopy;
 	}

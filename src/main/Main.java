@@ -1,6 +1,7 @@
 package main;
 
 
+import java.util.Scanner;
 import game.Game;
 /*
 to do
@@ -8,12 +9,18 @@ to do
 -reduce code smell
 */
 public class Main {
+	
 	public Main() {
+		Scanner scan = new Scanner(System.in);
+		String input = new String();
+		
 		Game chessBoard =new Game();
-
 		do{ 
 			try {
-				chessBoard.play();
+				chessBoard.showGameInfo();
+				System.out.println("insert move (from-to):..(CAPITAL ALPHABET) ex= A1-B2");
+				input = scan.nextLine();
+				chessBoard.play(input);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}

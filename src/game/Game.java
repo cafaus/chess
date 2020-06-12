@@ -1,35 +1,34 @@
 package game;
 
-import java.util.Scanner;
+
 import chessPiece.ChessPiece;
-
-
 
 public class Game {
 	private static Board board;
 	public Game() { 
-		board = new Board(true,true,true,true);
+		board =new Board(true,true,true,true);
 		
 	}
-	
-	public void play() throws Exception {
-		
-		Coordinates coordinate = new Coordinates();
+	public Board getGameBoard()  {
+		return board;
+	}
+	public void showGameInfo() {
 		BoardPrinter boardPrinter = new BoardPrinter();
-		CheckBehaviors checkBehaviors = new CheckBehaviors();
-		
 		boardPrinter.showBoard(board.getBoard());
 		
+		
 		String turn = board.isWhiteMove() ? "White" : "Black";
-		if(!checkBehaviors.isKingSafe(board.getBoard(), board.isWhiteMove())) {
-			board.setKingSafe(false);
-			System.out.println("CHECK!!");
-		}
-		else board.setKingSafe(true);
-		
+		if(!board.isKingSafe()) System.out.println("CHECK!!");//gw ubah ini
+	
 		System.out.println(turn + "Turn!!");
+	}
+	
+	public void play(String input) throws Exception {
+		CheckBehaviors checkBehaviors = new CheckBehaviors();
+		Coordinates coordinate = new Coordinates();
 		
-		coordinate = doCoordinateMoveNotation();
+		
+		coordinate = doCoordinateMoveNotation(input);
 		coordinate = board.getPreviousMovedChessPiece(coordinate);
 		
 		
@@ -40,22 +39,23 @@ public class Game {
 			String whoShouldMove = board.isWhiteMove() ? "White" : "Black"; 
 			throw new Exception("Invalid Move: you should pick a " + whoShouldMove + " piece!!");
 		}
-		if(!doMove(coordinate)) throw new Exception("");
+		if(!doMove(coordinate)) return;
+		
 		
 		board.setWhiteMove(board.isWhiteMove() ? false : true);
-		
+		if(!checkBehaviors.isKingSafe(board.getBoard(), board.isWhiteMove())) {//gw pindahin  ini
+			board.setKingSafe(false);
+		}else {
+			board.setKingSafe(true);
+		}
 	}
 
 	  
-	private Coordinates doCoordinateMoveNotation() throws Exception {
-		String input = new String();
+	private Coordinates doCoordinateMoveNotation(String input) throws Exception {
 		String chessPiece = new String("RNBQ"); // pawn must be remove
-		Scanner scan = new Scanner(System.in);
+		
 		Coordinates coordinate = new Coordinates();
 		Tools tools = new Tools();
-
-		System.out.println("insert move (from-to):..(CAPITAL ALPHABET) ex= A1-B2");
-		input = scan.nextLine();
 		
 		if(input.length() != 5 && input.length() != 6)throw new Exception("Invalid Move: length must be 5 or 6!!!");
 		

@@ -58,14 +58,14 @@ public class StalemateBehaviors {
 	}
 	
 	private boolean isKnightCanDoMove(Board board, int knightY, int knightX){
-		if(isChessPieceCanMove(board,knightY-2,knightX-1,knightY,knightX))return true;
-		if(isChessPieceCanMove(board,knightY-2,knightX+1,knightY,knightX))return true;
-		if(isChessPieceCanMove(board,knightY+2,knightX-1,knightY,knightX))return true;
-		if(isChessPieceCanMove(board,knightY+2,knightX+1,knightY,knightX))return true;
 		if(isChessPieceCanMove(board,knightY-1,knightX-2,knightY,knightX))return true;
 		if(isChessPieceCanMove(board,knightY-1,knightX+2,knightY,knightX))return true;
 		if(isChessPieceCanMove(board,knightY+1,knightX-2,knightY,knightX))return true;
 		if(isChessPieceCanMove(board,knightY+1,knightX+2,knightY,knightX))return true;
+		if(isChessPieceCanMove(board,knightY-2,knightX-1,knightY,knightX))return true;
+		if(isChessPieceCanMove(board,knightY-2,knightX+1,knightY,knightX))return true;
+		if(isChessPieceCanMove(board,knightY+2,knightX-1,knightY,knightX))return true;
+		if(isChessPieceCanMove(board,knightY+2,knightX+1,knightY,knightX))return true;
 		
 		return false;
 	}

@@ -12,13 +12,19 @@ public class Game {
 	public Board getGameBoard()  {
 		return board;
 	}
+	
+	public void printBoard()  {
+		BoardPrinter boardPrinter = new BoardPrinter();
+		boardPrinter.showBoard(board.getBoard());
+	}
+	
 	public void showGameInfo() {
 		BoardPrinter boardPrinter = new BoardPrinter();
 		boardPrinter.showBoard(board.getBoard());
 		
 		
 		String turn = board.isWhiteMove() ? "White" : "Black";
-		if(!board.isKingSafe()) System.out.println("CHECK!!");//gw ubah ini
+		if(!board.isKingSafe()) System.out.println("CHECK!!");
 	
 		System.out.println(turn + "Turn!!");
 	}
@@ -30,20 +36,20 @@ public class Game {
 		
 		coordinate = doCoordinateMoveNotation(input);
 		coordinate = board.getPreviousMovedChessPiece(coordinate);
-		
-		
+				
 		if(!board.getBoard()[coordinate.getFromY()][coordinate.getFromX()].isChessPiece()) {
 			throw new Exception("Invalid Move: choose a chess piece!!");
 		}
+		
 		if(board.isWhiteMove() != board.getBoard()[coordinate.getFromY()][coordinate.getFromX()].isWhitePiece()) {
 			String whoShouldMove = board.isWhiteMove() ? "White" : "Black"; 
 			throw new Exception("Invalid Move: you should pick a " + whoShouldMove + " piece!!");
 		}
 		if(!doMove(coordinate)) return;
-		
-		
+			
 		board.setWhiteMove(board.isWhiteMove() ? false : true);
-		if(!checkBehaviors.isKingSafe(board.getBoard(), board.isWhiteMove())) {//gw pindahin  ini
+		
+		if(!checkBehaviors.isKingSafe(board.getBoard(), board.isWhiteMove())) {
 			board.setKingSafe(false);
 		}else {
 			board.setKingSafe(true);

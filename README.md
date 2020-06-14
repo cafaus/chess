@@ -13,7 +13,7 @@ project for code reengineering
 - [X] pawn promotion
 - [X] checkmate
 - [x] draw on stalemate position
-- [ ] unit tests: test coverage min. 90%
+- [x] unit tests: test coverage min. 90%
 - [ ] reduce code smells
 
 ## How to Play

@@ -137,26 +137,17 @@ public class King extends ChessPiece{
 	
 
 	private void doWhiteKingCastling(Coordinates coordinate, Board board) {
+		Coordinates rookCoordinate = new Coordinates();
 		if(coordinate.getToY() == 7 && coordinate.getToX() == 6) {
 			board.moveChessPiece(coordinate);
-			
-			Coordinates rookCoordinate = new Coordinates();
-			rookCoordinate.setFromY(7);
-			rookCoordinate.setFromX(7);
-			rookCoordinate.setToY(7);
-			rookCoordinate.setToX(5);
-			
+			rookCoordinate.setFrom(7, 7);
+			rookCoordinate.setTo(7, 5);
 			board.moveChessPiece(rookCoordinate);
 		}
 		else {
 			board.moveChessPiece(coordinate);
-			
-			Coordinates rookCoordinate = new Coordinates();
-			rookCoordinate.setFromY(7);
-			rookCoordinate.setFromX(0);
-			rookCoordinate.setToY(7);
-			rookCoordinate.setToX(3);
-			
+			rookCoordinate.setFrom(7, 0);
+			rookCoordinate.setTo(7, 3);
 			board.moveChessPiece(rookCoordinate);
 		}
 	}
@@ -164,24 +155,17 @@ public class King extends ChessPiece{
 	public void doBlackKingCastling(Coordinates coordinate, Board board) {
 		if(coordinate.getToY() == 0 && coordinate.getToX() == 6) {
 			board.moveChessPiece(coordinate);
-			
 			Coordinates rookCoordinate = new Coordinates();
-			rookCoordinate.setFromY(0);
-			rookCoordinate.setFromX(7);
-			rookCoordinate.setToY(0);
-			rookCoordinate.setToX(5);
-			
+			rookCoordinate.setFrom(0, 7);
+			rookCoordinate.setTo(0, 5);
 			board.moveChessPiece(rookCoordinate);
 		}
 		else {
 			board.moveChessPiece(coordinate);
 			
 			Coordinates rookCoordinate = new Coordinates();
-			rookCoordinate.setFromY(0);
-			rookCoordinate.setFromX(0);
-			rookCoordinate.setToY(0);
-			rookCoordinate.setToX(3);
-			
+			rookCoordinate.setFrom(0, 0);
+			rookCoordinate.setTo(0, 3);
 			board.moveChessPiece(rookCoordinate);
 		}
 	}

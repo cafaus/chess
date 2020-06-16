@@ -2,9 +2,7 @@ package game;
 
 import chessPiece.Bishop;
 import chessPiece.ChessPiece;
-import chessPiece.King;
 import chessPiece.Knight;
-import chessPiece.Pawn;
 import chessPiece.Queen;
 import chessPiece.Rook;
 
@@ -50,11 +48,23 @@ public class Coordinates {
 		return fromX;
 	}
 
-	public void setFromX(int fromX) {
+	public void setFrom(int fromY, int fromX) {
+		this.fromY = fromY;
 		this.fromX = fromX;
 	}
 
-	
+	public int getToX() {
+		return toX;
+	}
+
+	public int getToY() {
+		return toY;
+	}
+	public void setTo(int toY,int toX) {
+		this.toY = toY;
+		this.toX = toX;
+	}
+
 
 	public int getTopBoundary() {
 		return topBoundary;
@@ -75,26 +85,7 @@ public class Coordinates {
 	public int getFromY() {
 		return fromY;
 	}
-
-	public void setFromY(int fromY) {
-		this.fromY = fromY;
-	}
-
-	public int getToX() {
-		return toX;
-	}
-
-	public void setToX(int toX) {
-		this.toX = toX;
-	}
-
-	public int getToY() {
-		return toY;
-	}
-
-	public void setToY(int toY) {
-		this.toY = toY;
-	}
+ 
 
 	public ChessPiece getChessPiecePromote() {
 		return chessPiecePromote;

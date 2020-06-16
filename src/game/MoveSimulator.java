@@ -5,8 +5,13 @@ import chessPiece.Square;
 
 public class MoveSimulator {
 	
-	// long parameter, data clump
-		protected boolean isWhitePawnCannotProtect(Square[][] board,int kingYProtectArea, int kingXProtectArea, int pawnY, int pawnX) {
+
+		protected boolean isWhitePawnCannotProtect(Square[][] board, Coordinates coordinate) {
+			int pawnY = coordinate.getFromY();
+			int pawnX = coordinate.getFromX();
+			int kingYProtectArea = coordinate.getToY();
+			int kingXProtectArea = coordinate.getToX();
+			
 			if(board[kingYProtectArea][kingXProtectArea].isBlackPiece()){
 				if(pawnY - 1 == kingYProtectArea && pawnX + 1 == kingXProtectArea) return false;
 				if(pawnY - 1 == kingYProtectArea && pawnX - 1 == kingXProtectArea) return false;
@@ -15,8 +20,12 @@ public class MoveSimulator {
 			}
 			return true;
 		}
-		//long parameter, data clump
-		protected boolean isBlackPawnCannotProtect(Square[][] board,int kingYProtectArea, int kingXProtectArea, int pawnY, int pawnX) {
+
+		protected boolean isBlackPawnCannotProtect(Square[][] board, Coordinates coordinate) {
+			int pawnY = coordinate.getFromY();
+			int pawnX = coordinate.getFromX();
+			int kingYProtectArea = coordinate.getToY();
+			int kingXProtectArea = coordinate.getToX();
 			if(board[kingYProtectArea][kingXProtectArea].isWhitePiece()){
 				if(pawnY + 1 == kingYProtectArea && pawnX + 1 == kingXProtectArea) return false;
 				if(pawnY + 1 == kingYProtectArea && pawnX - 1 == kingXProtectArea) return false;
@@ -26,48 +35,56 @@ public class MoveSimulator {
 			return true;
 		}
 		
-		protected boolean isKingCannotDefend(Board gameBoard,int kingYProtectArea, int kingXProtectArea, int kingY, int kingX){	
+		protected boolean isKingCannotDefend(Board gameBoard,Coordinates coordinate){	
+			int kingY = coordinate.getFromY();
+			int kingX = coordinate.getFromX();
+			int kingYProtectArea = coordinate.getToY();
+			int kingXProtectArea = coordinate.getToX();
 			int yCalculationMaterial = kingY - kingYProtectArea;
 			int xCalculationMaterial = kingX - kingXProtectArea;
 			boolean isKingDefMoveSafe = false;
 
 			if((Math.abs(yCalculationMaterial) == 0 || Math.abs(yCalculationMaterial) == 1) &&  (Math.abs(xCalculationMaterial) == 0 ||  Math.abs(xCalculationMaterial) == 1)){
-				isKingDefMoveSafe = isKingDefendMoveSafe(gameBoard,kingYProtectArea,kingXProtectArea,kingY,kingX);
+				isKingDefMoveSafe = isKingDefendMoveSafe(gameBoard,coordinate);
 			}
 			 if(isKingDefMoveSafe)return false;
 			return true;
 		} 
 		
-		protected boolean isKingDefendMoveSafe(Board gameBoard,int kingYProtectArea, int kingXProtectArea, int kingY, int kingX){
-			Coordinates coordinate = new Coordinates();
-			Board boardCopy = new Board(gameBoard.isWhiteMove(), gameBoard.isWhiteKingAndRookNeverMove(), gameBoard.isBlackKingAndRookNeverMove(), gameBoard.isKingSafe());
+		private boolean isKingDefendMoveSafe(Board gameBoard,Coordinates coordinate){
+			int kingY = coordinate.getFromY();
+			int kingX = coordinate.getFromX();
 			
+			Board boardCopy = new Board(gameBoard.isWhiteMove(), gameBoard.isWhiteKingAndRookNeverMove(), gameBoard.isBlackKingAndRookNeverMove(), gameBoard.isKingSafe());
 			boardCopy.setBoard(gameBoard.getBoard());
 			
-			coordinate.setFromY(kingY);
-			coordinate.setFromX(kingX);		
-			coordinate.setToY(kingYProtectArea);
-			coordinate.setToX(kingXProtectArea);		
 			ChessPiece chessPiece = boardCopy.getBoard()[kingY][kingX].getChessPiece();
 			boolean canMove = chessPiece.validateCaptureChessPiece(coordinate, boardCopy);
 			
 			return canMove;
 		}
 		
-		protected boolean isWhitePawnCannotCapture(int targetY, int targetX, int pawnY, int pawnX) {
-			if(pawnY - 1 == targetY && pawnX + 1 == targetX) return false;
-			if(pawnY - 1 == targetY && pawnX - 1 == targetX) return false;
+		protected boolean isWhitePawnCannotCapture(Coordinates coordinate) {
+			if(coordinate.getFromY() - 1 == coordinate.getToY() && coordinate.getFromX() + 1 == coordinate.getToX()) return false;
+			if(coordinate.getFromY() - 1 == coordinate.getToY() && coordinate.getFromX() - 1 == coordinate.getToX()) return false;
 			return true;
 		}
-		protected boolean isBlackPawnCannotMoveToTarget(int targetY, int targetX, int pawnY, int pawnX) {
-			if(pawnY + 1 == targetY && pawnX + 1 == targetX) return false;
-			if(pawnY + 1 == targetY && pawnX - 1 == targetX) return false;
+		
+		protected boolean isBlackPawnCannotMoveToTarget(Coordinates coordinate) {
+			if(coordinate.getFromY() + 1 == coordinate.getToY() && coordinate.getFromX() + 1 == coordinate.getToX()) return false;
+			if(coordinate.getFromY() + 1 == coordinate.getToY() && coordinate.getFromX() - 1 == coordinate.getToX()) return false;
 			return true;
 		}
 		
 		// data clump (Square[][] board, int kingY, int kingX
 		// long prameter
-		protected boolean isRookCannotMoveToTarget(Square[][] board, int targetY, int targetX, int rookY, int rookX) {
+		protected boolean isRookCannotMoveToTarget(Square[][] board, Coordinates coordinate) {
+			
+			int targetY = coordinate.getToY(); 
+			int targetX = coordinate.getToX();
+			int rookY = coordinate.getFromY(); 
+			int rookX = coordinate.getFromX();
+			
 			return 	simulateToTop(board, targetY, targetX, rookY - 1, rookX) &&
 					simulateToBottom(board, targetY, targetX, rookY + 1, rookX) &&
 					simulateToLeft(board, targetY, targetX, rookY, rookX - 1) &&
@@ -114,8 +131,11 @@ public class MoveSimulator {
 			return true;
 		}
 		
-		protected boolean isBishopCannotMoveToTarget(Square[][] board, int targetY, int targetX, int bishopY, int bishopX) {
-			
+		protected boolean isBishopCannotMoveToTarget(Square[][] board,Coordinates coordinate ) {
+			int targetY = coordinate.getToY();
+			int targetX = coordinate.getToX();
+			int bishopY = coordinate.getFromY();
+			int bishopX = coordinate.getFromX();;
 			return simulateToTopLeft(board, targetY, targetX, bishopY - 1, bishopX - 1) &&
 				   simulateToTopRight(board, targetY, targetX, bishopY - 1, bishopX + 1) &&
 				   simulateToBottomRight(board, targetY, targetX, bishopY + 1, bishopX + 1) &&
@@ -150,8 +170,8 @@ public class MoveSimulator {
 			return simulateToBottomLeft(board, targetY, targetX, bishopY + 1, bishopX -1);
 		}
 		
-		protected boolean isQueenCannotMoveToTarget(Square[][] board, int targetY, int targetX, int queenY, int queenX) {
-			return isRookCannotMoveToTarget(board, targetY, targetX, queenY, queenX) && isBishopCannotMoveToTarget(board, targetY, targetX, queenY, queenX);
+		protected boolean isQueenCannotMoveToTarget(Square[][] board, Coordinates coordinate) {
+			return isRookCannotMoveToTarget(board, coordinate) && isBishopCannotMoveToTarget(board, coordinate);
 		}
 		
 		protected boolean isKingCannotMoveToTarget(int targetY, int targetX, int enemyKingY, int enemyKingX) {

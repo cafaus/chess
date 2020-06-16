@@ -7,18 +7,42 @@ public class CheckBehaviors {
 	
 	public boolean isCheckMate(Board board) {
 		int checked = 0;
+		Coordinates coordinate = new Coordinates();
 		char king = board.isWhiteMove() ? 'k' : 'K';
 		int kingY = getKingCoordinateY(board.getBoard(), king); 
 		int kingX = getKingCoordinateX(board.getBoard(), king);
 		
-		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY - 1, kingX)) checked++;
-		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY - 1, kingX + 1))checked++;
-		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY - 1, kingX - 1))checked++;
-		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY , kingX - 1))checked++;
-		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY, kingX + 1))checked++;	
-		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY + 1, kingX + 1))checked++;
-		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY + 1, kingX))checked++;
-		if(!isKingMoveAreaSafe(board, kingY, kingX, kingY + 1, kingX - 1))checked++;
+		coordinate.setFrom(kingY, kingX);
+		coordinate.setTo(kingY - 1, kingX);
+		if(!isKingMoveAreaSafe(board, coordinate)) checked++;
+		
+		coordinate.setFrom(kingY, kingX);
+		coordinate.setTo(kingY - 1, kingX + 1);
+		if(!isKingMoveAreaSafe(board, coordinate))checked++;
+		
+		coordinate.setFrom(kingY, kingX);
+		coordinate.setTo(kingY - 1, kingX - 1);
+		if(!isKingMoveAreaSafe(board, coordinate))checked++;
+		
+		coordinate.setFrom(kingY, kingX);
+		coordinate.setTo(kingY, kingX - 1);
+		if(!isKingMoveAreaSafe(board, coordinate))checked++;
+		
+		coordinate.setFrom(kingY, kingX);
+		coordinate.setTo(kingY, kingX + 1);
+		if(!isKingMoveAreaSafe(board, coordinate))checked++;	
+		
+		coordinate.setFrom(kingY, kingX);
+		coordinate.setTo(kingY + 1, kingX + 1);
+		if(!isKingMoveAreaSafe(board, coordinate))checked++;
+		
+		coordinate.setFrom(kingY, kingX);
+		coordinate.setTo(kingY + 1, kingX);
+		if(!isKingMoveAreaSafe(board, coordinate))checked++;
+		
+		coordinate.setFrom(kingY, kingX);
+		coordinate.setTo(kingY + 1, kingX -1);
+		if(!isKingMoveAreaSafe(board, coordinate))checked++;
 		
 		if(checked < 8) return false;
 		return true;
@@ -26,17 +50,18 @@ public class CheckBehaviors {
 
 		
 	// long parameter, dataclump
-	private boolean isKingMoveAreaSafe(Board board, int kingY, int kingX, int toY, int toX) {
-		Coordinates coordinate = new Coordinates();
+	private boolean isKingMoveAreaSafe(Board board, Coordinates coordinate) {
+		
 		Board boardCopy = new Board(board.isWhiteMove(), board.isWhiteKingAndRookNeverMove(), board.isBlackKingAndRookNeverMove(), board.isKingSafe());
 		boardCopy.setBoard(board.getBoard());
 				
-		coordinate.setFromY(kingY);
-		coordinate.setFromX(kingX);		
-		coordinate.setToY(toY);
-		coordinate.setToX(toX);
+		int kingY = coordinate.getFromY();
+		int kingX = coordinate.getFromX();
+		int toY = coordinate.getToY();
+		int toX = coordinate.getToX();
 		
 		boardCopy.getBoard()[kingY][kingX].getChessPiece().canMove(coordinate, boardCopy);
+		
 		
 		if(!isKingSafe(boardCopy.getBoard(), board.isWhiteMove())){
 				
@@ -92,14 +117,18 @@ public class CheckBehaviors {
 	
 	public boolean isWhiteKingSafe(Square[][] board,int kingY, int kingX) {
 		MoveSimulator moveSimulator= new MoveSimulator();
+		
+		Coordinates coordinate = new Coordinates();
 		boolean isSafe = true;
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if(board[i][j].getChessPieceId() == 'P')isSafe = moveSimulator.isBlackPawnCannotMoveToTarget(kingY, kingX, i, j);	
-				else if(board[i][j].getChessPieceId() == 'R')isSafe = moveSimulator.isRookCannotMoveToTarget(board,kingY, kingX,i,j);
+				coordinate.setFrom(i, j);
+				coordinate.setTo(kingY, kingX);
+				if(board[i][j].getChessPieceId() == 'P')isSafe = moveSimulator.isBlackPawnCannotMoveToTarget(coordinate);	
+				else if(board[i][j].getChessPieceId() == 'R')isSafe = moveSimulator.isRookCannotMoveToTarget(board,coordinate); 
 				else if(board[i][j].getChessPieceId() == 'N') isSafe = moveSimulator.isKnightCannotMoveToTarget(kingY,kingX,i,j);
-				else if(board[i][j].getChessPieceId() == 'B')isSafe = moveSimulator.isBishopCannotMoveToTarget(board,kingY,kingX,i,j);
-				else if(board[i][j].getChessPieceId() == 'Q')isSafe = moveSimulator.isQueenCannotMoveToTarget(board,kingY,kingX,i,j);
+				else if(board[i][j].getChessPieceId() == 'B')isSafe = moveSimulator.isBishopCannotMoveToTarget(board,coordinate);
+				else if(board[i][j].getChessPieceId() == 'Q')isSafe = moveSimulator.isQueenCannotMoveToTarget(board,coordinate);
 				else if(board[i][j].getChessPieceId() == 'K')isSafe = moveSimulator.isKingCannotMoveToTarget(kingY,kingX,i,j);
 				if(!isSafe) return false;
 			}
@@ -108,14 +137,18 @@ public class CheckBehaviors {
 	}
 	public boolean isBlackKingSafe(Square[][] board,int kingY, int kingX) {
 		MoveSimulator moveSimulator= new MoveSimulator();
+		Coordinates coordinate = new Coordinates();
 		boolean isSafe = true;
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if(board[i][j].getChessPieceId() == 'p')isSafe = moveSimulator.isWhitePawnCannotCapture(kingY, kingX, i, j);
-				else if(board[i][j].getChessPieceId() == 'r')isSafe = moveSimulator.isRookCannotMoveToTarget(board,kingY, kingX,i,j);
+				
+				coordinate.setFrom(i, j);
+				coordinate.setTo(kingY, kingX);
+				if(board[i][j].getChessPieceId() == 'p')isSafe = moveSimulator.isWhitePawnCannotCapture(coordinate);
+				else if(board[i][j].getChessPieceId() == 'r')isSafe = moveSimulator.isRookCannotMoveToTarget(board,coordinate);
 				else if(board[i][j].getChessPieceId() == 'n')isSafe = moveSimulator.isKnightCannotMoveToTarget(kingY,kingX,i,j);
-				else if(board[i][j].getChessPieceId() == 'b')isSafe = moveSimulator.isBishopCannotMoveToTarget(board,kingY,kingX,i,j);
-				else if(board[i][j].getChessPieceId() == 'q')isSafe = moveSimulator.isQueenCannotMoveToTarget(board,kingY,kingX,i,j);
+				else if(board[i][j].getChessPieceId() == 'b')isSafe = moveSimulator.isBishopCannotMoveToTarget(board,coordinate);
+				else if(board[i][j].getChessPieceId() == 'q')isSafe = moveSimulator.isQueenCannotMoveToTarget(board,coordinate);
 				else if(board[i][j].getChessPieceId() == 'k')isSafe = moveSimulator.isKingCannotMoveToTarget(kingY,kingX,i,j);
 				if(!isSafe)return false;
 			}
@@ -158,16 +191,15 @@ public class CheckBehaviors {
 			for (int j = 0; j < 8; j++) {
 				gameBoardCopy.setBoard(gameBoard.getBoard());
 				
-				coordinate.setFromY(i);
-				coordinate.setFromX(j);
-				coordinate.setToY(kingY);
-				coordinate.setToX(kingX);
 				
-				if(board[i][j].getChessPieceId() == 'p' && !moveSimulator.isWhitePawnCannotProtect(board,kingY, kingX, i, j)){
+				coordinate.setFrom(i, j);
+				coordinate.setTo(kingY, kingX);
+				
+				if(board[i][j].getChessPieceId() == 'p' && !moveSimulator.isWhitePawnCannotProtect(board,coordinate)){
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());
 				}
-				else if(board[i][j].getChessPieceId() == 'r' && !moveSimulator.isRookCannotMoveToTarget(board,kingY, kingX,i,j)) {
+				else if(board[i][j].getChessPieceId() == 'r' && !moveSimulator.isRookCannotMoveToTarget(board,coordinate)) {
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());
 				}
@@ -175,15 +207,15 @@ public class CheckBehaviors {
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());
 				}
-				else if(board[i][j].getChessPieceId() == 'b' && !moveSimulator.isBishopCannotMoveToTarget(board,kingY,kingX,i,j)){
+				else if(board[i][j].getChessPieceId() == 'b' && !moveSimulator.isBishopCannotMoveToTarget(board,coordinate)){
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());
 				}
-				else if(board[i][j].getChessPieceId() == 'q' && !moveSimulator.isQueenCannotMoveToTarget(board,kingY,kingX,i,j)) {
+				else if(board[i][j].getChessPieceId() == 'q' && !moveSimulator.isQueenCannotMoveToTarget(board,coordinate)) {
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());
 				}
-				else if(board[i][j].getChessPieceId() == 'k' && !moveSimulator.isKingCannotDefend(gameBoard,kingY,kingX,i,j)) {
+				else if(board[i][j].getChessPieceId() == 'k' && !moveSimulator.isKingCannotDefend(gameBoard, coordinate)) {
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());				
 				}
@@ -205,16 +237,14 @@ public class CheckBehaviors {
 			for (int j = 0; j < 8; j++) {
 				gameBoardCopy.setBoard(gameBoard.getBoard());
 				
-				coordinate.setFromY(i);
-				coordinate.setFromX(j);
-				coordinate.setToY(kingY);
-				coordinate.setToX(kingX);
+				coordinate.setFrom(i, j);
+				coordinate.setTo(kingY, kingX);
 				
-				if(board[i][j].getChessPieceId() == 'P' && !moveSimulator.isBlackPawnCannotProtect(board,kingY, kingX, i, j)){
+				if(board[i][j].getChessPieceId() == 'P' && !moveSimulator.isBlackPawnCannotProtect(board, coordinate)){
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());			
 				}
-				else if(board[i][j].getChessPieceId() == 'R' && !moveSimulator.isRookCannotMoveToTarget(board,kingY, kingX,i,j)) {
+				else if(board[i][j].getChessPieceId() == 'R' && !moveSimulator.isRookCannotMoveToTarget(board,coordinate)) {
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());
 				}
@@ -222,15 +252,15 @@ public class CheckBehaviors {
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());	
 				}
-				else if(board[i][j].getChessPieceId() == 'B' && !moveSimulator.isBishopCannotMoveToTarget(board,kingY,kingX,i,j)){
+				else if(board[i][j].getChessPieceId() == 'B' && !moveSimulator.isBishopCannotMoveToTarget(board,coordinate)){
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());		
 				}
-				else if(board[i][j].getChessPieceId() == 'Q' && !moveSimulator.isQueenCannotMoveToTarget(board,kingY,kingX,i,j)) {
+				else if(board[i][j].getChessPieceId() == 'Q' && !moveSimulator.isQueenCannotMoveToTarget(board,coordinate)) {
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());
 				}
-				else if(board[i][j].getChessPieceId() == 'K' && !moveSimulator.isKingCannotDefend(gameBoard,kingY,kingX,i,j)) {
+				else if(board[i][j].getChessPieceId() == 'K' && !moveSimulator.isKingCannotDefend(gameBoard,coordinate)) {
 					gameBoardCopy.moveChessPiece(coordinate);
 					isSafe = !isKingSafe(gameBoardCopy.getBoard(), gameBoardCopy.isWhiteMove());				
 				}

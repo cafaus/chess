@@ -98,16 +98,15 @@ public class StalemateBehaviors {
 		return false;
 	}
 	
-	private boolean isChessPieceCanMove(Board gameBoard,int targetY, int targetX, int fromY, int fromX){
+	public boolean isChessPieceCanMove(Board gameBoard,int targetY, int targetX, int fromY, int fromX){
 		Coordinates coordinate = new Coordinates();
 		Board boardCopy = new Board(gameBoard.isWhiteMove(), gameBoard.isWhiteKingAndRookNeverMove(), gameBoard.isBlackKingAndRookNeverMove(), gameBoard.isKingSafe());
 		
 		boardCopy.setBoard(gameBoard.getBoard());
 		
-		coordinate.setFromY(fromY);
-		coordinate.setFromX(fromX);		
-		coordinate.setToY(targetY);
-		coordinate.setToX(targetX);	
+
+		coordinate.setFrom(fromY, fromX);
+		coordinate.setTo(targetY, targetX);
 		if(coordinate.getToY()<0 || coordinate.getToY()>7 || coordinate.getToX()<0 || coordinate.getToX()>7){
 			return false;
 		}

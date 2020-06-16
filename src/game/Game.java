@@ -70,6 +70,20 @@ public class Game {
 		char toIndexZero = input.charAt(3);
 		char toIndexOne = input.charAt(4);
 		
+		isValidInput(input, chessPiece, tools, fromIndexZero, fromIndexOne, toIndexZero, toIndexOne);
+		
+		if(input.length() == 6) {
+			coordinate.SetChessPiecePromoteCharToObject(input.charAt(5), board.isWhiteMove());
+		}
+		
+		coordinate.setFrom(7 - (fromIndexOne - 49), fromIndexZero - 65);
+		coordinate.setTo(7 - (toIndexOne - 49), toIndexZero - 65);
+			
+		return coordinate;
+	}
+	
+	private void isValidInput(String input, String chessPiece, Tools tools, char fromIndexZero, char fromIndexOne,
+			char toIndexZero, char toIndexOne) throws Exception {
 		if(input.length() == 5) {
 			if(tools.isOutside(fromIndexZero,'A','H'))throw new Exception("Invalid Move: first character!!!");
 			if(tools.isOutside(fromIndexOne, '1', '8')) throw new Exception("Invalid Move: second character!!!");
@@ -87,15 +101,8 @@ public class Game {
 				if(input.charAt(5) == chessPiece.charAt(i)) break;
 				if(i == 4)throw new Exception("Invalid Move: promotion character!!!");
 			}
-			coordinate.SetChessPiecePromoteCharToObject(input.charAt(5), board.isWhiteMove());
+			
 		}
-			
-		coordinate.setFromX(fromIndexZero - 65);
-		coordinate.setFromY(7 - (fromIndexOne - 49));
-		coordinate.setToX(toIndexZero - 65);
-		coordinate.setToY(7 - (toIndexOne - 49));
-			
-		return coordinate;
 	}
 
 	

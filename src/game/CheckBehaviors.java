@@ -48,8 +48,6 @@ public class CheckBehaviors {
 		return true;
 	}
 
-		
-	// long parameter, dataclump
 	private boolean isKingMoveAreaSafe(Board board, Coordinates coordinate) {
 		
 		Board boardCopy = new Board(board.isWhiteMove(), board.isWhiteKingAndRookNeverMove(), board.isBlackKingAndRookNeverMove(), board.isKingSafe());
@@ -180,7 +178,6 @@ public class CheckBehaviors {
 		return false;
 	}
 	
-	// long parameter di king, data clump
 	private boolean isWhiteKingCannotBeProtect(Board gameBoard,Square[][] board,int kingY, int kingX) {
 		MoveSimulator moveSimulator= new MoveSimulator();
 		boolean isSafe = true;
@@ -226,7 +223,6 @@ public class CheckBehaviors {
 		return isSafe;
 	}
 	
-	// long parameter di king, data clump
 	private boolean isBlackKingCannotBeProtect(Board gameBoard,Square[][] board,int kingY, int kingX) {
 		MoveSimulator moveSimulator= new MoveSimulator();
 		boolean isSafe = true;

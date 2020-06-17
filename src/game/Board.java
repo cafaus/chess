@@ -221,5 +221,40 @@ public class Board {
 		board.setBoard(boardCopy);
 		return true;	
 	}
+
+	public boolean isChessPieceExistBetweenFromAndToInY(int from, int to, int X) {
+		++from;
+		for (int i = from; i < to; i++) {
+			if(board[i][X].isChessPiece()) return true; 
+		}
+		return false;
+	}
 	
+
+	public boolean isChessPieceExistBetweenFromAndToInX(int from, int to, int Y) {
+		++from;
+		for (int i = from; i < to; i++) {
+			if(board[Y][i].isChessPiece()) return true; 
+		}
+		return false;
+	}
+	
+	public boolean isChessPieceExistOnDiagonalMove(Coordinates coordinate,int yMovement, int xMovement){
+		int fromX = coordinate.getFromX();
+		int fromY = coordinate.getFromY();
+		int toX = coordinate.getToX();
+		int toY = coordinate.getToY();
+		int currXposition= fromX-xMovement;
+		int currYposition= fromY-yMovement;
+		
+		while(currXposition != toX && currYposition != toY){
+			if(board[currYposition][currXposition].isChessPiece() ){
+				return true;
+			}
+			currYposition-=yMovement;
+			currXposition-=xMovement;
+		}
+		
+		return false;
+	}
 }

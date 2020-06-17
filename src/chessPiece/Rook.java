@@ -2,7 +2,6 @@ package chessPiece;
 
 import game.Board;
 import game.Coordinates;
-import game.Tools;
 
 public  class Rook extends ChessPiece{
 
@@ -21,7 +20,6 @@ public  class Rook extends ChessPiece{
 	}
 	
 	public boolean behavior(Coordinates coordinate, Board board) {
-		Tools tools = new Tools();
 		int fromX = coordinate.getFromX();
 		int fromY = coordinate.getFromY();
 		int toX = coordinate.getToX();
@@ -33,21 +31,21 @@ public  class Rook extends ChessPiece{
 		
 		if(toY == fromY) {
 			
-			if( fromXisSmallerThanToX ) {
-				if(tools.isChessPieceExistBetweenFromAndToInX(board, fromX, toX, toY))return false;
+			if(fromXisSmallerThanToX ) {
+				if(board.isChessPieceExistBetweenFromAndToInX(fromX, toX, toY))return false;
 			}
 			else {
-				if(tools.isChessPieceExistBetweenFromAndToInX(board, toX ,fromX , toY))return false;
+				if(board.isChessPieceExistBetweenFromAndToInX(toX ,fromX , toY))return false;
 			}
 			return true;
 		}
 		if( toX == fromX) {
 			
 			if( fromYisSmallerThanToY ) {
-				if(tools.isChessPieceExistBetweenFromAndToInY(board, fromY, toY, toX))return false;
+				if(board.isChessPieceExistBetweenFromAndToInY(fromY, toY, toX))return false;
 			}
 			else {
-				if(tools.isChessPieceExistBetweenFromAndToInY(board, toY  ,fromY, toX))return false;
+				if(board.isChessPieceExistBetweenFromAndToInY(toY ,fromY, toX))return false;
 			}
 			return true;
 
@@ -71,11 +69,5 @@ public  class Rook extends ChessPiece{
 	public String toString() {
 		return "rook";
 	}
-	
-
-	
-	
-
-
-	
+		
 }

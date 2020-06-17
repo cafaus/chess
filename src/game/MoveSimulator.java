@@ -76,8 +76,6 @@ public class MoveSimulator {
 			return true;
 		}
 		
-		// data clump (Square[][] board, int kingY, int kingX
-		// long prameter
 		protected boolean isRookCannotMoveToTarget(Square[][] board, Coordinates coordinate) {
 			
 			int targetY = coordinate.getToY(); 

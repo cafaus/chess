@@ -2,7 +2,6 @@ package chessPiece;
 
 import game.Board;
 import game.Coordinates;
-import game.Tools;
 
 public class Pawn extends ChessPiece{
 	
@@ -21,14 +20,14 @@ public class Pawn extends ChessPiece{
 	public boolean behavior(Coordinates coordinate, Board board) {
 		int fromY = coordinate.getFromY();
 		int toY = coordinate.getToY();
-		int toX = coordinate.getToX();
+
 		if(board.isWhiteMove()) {
 			if(isPawnNeverMove(fromY,6)) {
 				coordinate.setTopBoundary(fromY - 2);
 				coordinate.setBottomBoundary(fromY);
 				
 				if(validatePawnOnFirstMove(coordinate, board, 1)) return validateCaptureChessPiece(coordinate, board);
-			}else {//else ini isi nya gw ubah
+			}else {
 				coordinate.setTopBoundary(fromY - 1);
 				coordinate.setBottomBoundary(fromY);
 				
@@ -49,7 +48,7 @@ public class Pawn extends ChessPiece{
 				coordinate.setBottomBoundary(fromY + 2);
 				
 				if(validatePawnOnFirstMove(coordinate, board, -1)) return validateCaptureChessPiece(coordinate, board);
-			}else {//else ini isi nya gw ubah
+			}else {
 				coordinate.setTopBoundary(fromY );
 				coordinate.setBottomBoundary(fromY + 1);
 				
@@ -87,16 +86,15 @@ public class Pawn extends ChessPiece{
 		int fromY = coordinate.getFromY();
 		int toX = coordinate.getToX();
 		int toY = coordinate.getToY();
-		Tools tools = new Tools();
 		
 		if(captureChessPieceDiagonal(coordinate, board, oneTileForward)) return true;
 		if(isMoveOneTileForward(coordinate, oneTileForward) && !board.getBoard()[toY][toX].isChessPiece()) return true;
-		if(tools.isBetweenTheBoundary(coordinate, fromX, toX, toY) && !board.getBoard()[toY][toX].isChessPiece()) {
+		if(isBetweenTheBoundary(coordinate, fromX, toX, toY) && !board.getBoard()[toY][toX].isChessPiece()) {
 			if(board.isWhiteMove()) {
-				if(tools.isChessPieceExistBetweenFromAndToInY(board, toY  ,fromY, toX)) return false;
+				if(board.isChessPieceExistBetweenFromAndToInY(toY ,fromY, toX)) return false;
 			}
 			else {
-				if(tools.isChessPieceExistBetweenFromAndToInY(board, fromY  ,toY, toX)) return false;
+				if(board.isChessPieceExistBetweenFromAndToInY(fromY ,toY, toX)) return false;
 			}
 			return true;
 		}
@@ -115,15 +113,13 @@ public class Pawn extends ChessPiece{
 	
 	
 	private boolean validatePawnAfterFirstMove(Coordinates coordinate, Board board, int oneTileForward) {
-		Tools tools = new Tools();
 		int fromX = coordinate.getFromX();
 		int toX = coordinate.getToX();
 		int toY = coordinate.getToY();
-		
-		
+			
 		if(isCaptureChessPieceByEnpassant(coordinate, board)) return board.captureChessPieceByEnpassant(board, coordinate);
 		if(captureChessPieceDiagonal(coordinate, board,  oneTileForward)) return  validateCaptureChessPiece(coordinate, board);
-		if(tools.isBetweenTheBoundary(coordinate, fromX, toX, toY) && !board.getBoard()[toY][toX].isChessPiece()) return  validateCaptureChessPiece(coordinate, board);
+		if(isBetweenTheBoundary(coordinate, fromX, toX, toY) && !board.getBoard()[toY][toX].isChessPiece()) return  validateCaptureChessPiece(coordinate, board);
 		return false;
 	}
 	
@@ -170,7 +166,9 @@ public class Pawn extends ChessPiece{
 		return fromY == PawnFirstRow;
 	}
 
-
+	private boolean isBetweenTheBoundary(Coordinates coordinate, int area1, int area2, int target) {
+		return target >= coordinate.getTopBoundary() &&  target <= coordinate.getBottomBoundary() && area1 == area2;
+	}
 
 	private boolean captureChessPieceDiagonal(Coordinates coordinate, Board board ,int oneTileForward) {
 		
@@ -197,7 +195,7 @@ public class Pawn extends ChessPiece{
 	}
 	
 	
-	private Square[][] changeChessPieceIntoPromotedChessPiece(Board board,Coordinates coordinate) {//isi nya gw ubah
+	private Square[][] changeChessPieceIntoPromotedChessPiece(Board board,Coordinates coordinate) {
 		int toY = coordinate.getToY();
 		int toX = coordinate.getToX();
 

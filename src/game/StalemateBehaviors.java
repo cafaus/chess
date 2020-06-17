@@ -98,7 +98,7 @@ public class StalemateBehaviors {
 		return false;
 	}
 	
-	public boolean isChessPieceCanMove(Board gameBoard,int targetY, int targetX, int fromY, int fromX){
+	private boolean isChessPieceCanMove(Board gameBoard,int targetY, int targetX, int fromY, int fromX){
 		Coordinates coordinate = new Coordinates();
 		Board boardCopy = new Board(gameBoard.isWhiteMove(), gameBoard.isWhiteKingAndRookNeverMove(), gameBoard.isBlackKingAndRookNeverMove(), gameBoard.isKingSafe());
 		

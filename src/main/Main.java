@@ -3,11 +3,7 @@ package main;
 
 import java.util.Scanner;
 import game.Game;
-/*
-to do
--unit test coverage 90% 
--reduce code smell
-*/
+
 public class Main {
 	
 	public Main() {

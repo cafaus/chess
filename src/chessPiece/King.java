@@ -4,7 +4,6 @@ package chessPiece;
 import game.Board;
 import game.CheckBehaviors;
 import game.Coordinates;
-import game.Tools;
 
 public class King extends ChessPiece{
 
@@ -106,7 +105,6 @@ public class King extends ChessPiece{
 
 
 	private boolean isCastling(Coordinates coordinate, Board board) {
-		Tools tools = new Tools();
 		CheckBehaviors checkBehavior = new CheckBehaviors();
 
 		int toX = coordinate.getToX();
@@ -118,17 +116,17 @@ public class King extends ChessPiece{
 			return false;
 		}
 		
-		if (board.isWhiteMove() && board.isWhiteKingAndRookNeverMove() && toY == 7 && toX == 6 && !tools.isChessPieceExistBetweenFromAndToInX(board, 4, 7, 7)) {
+		if (board.isWhiteMove() && board.isWhiteKingAndRookNeverMove() && toY == 7 && toX == 6 && !board.isChessPieceExistBetweenFromAndToInX(4, 7, 7)) {
 			if(checkBehavior.isWhiteKingSafe(board.getBoard(), 7, 5)) return true;
 		}
-		if (board.isWhiteMove() && board.isWhiteKingAndRookNeverMove() && toY == 7 && toX == 2  && !tools.isChessPieceExistBetweenFromAndToInX(board, 0, 4, 7)) {
+		if (board.isWhiteMove() && board.isWhiteKingAndRookNeverMove() && toY == 7 && toX == 2  && !board.isChessPieceExistBetweenFromAndToInX(0, 4, 7)) {
 			if(checkBehavior.isWhiteKingSafe(board.getBoard(), 7, 3)) return true;
 		}
 		
-		if (!board.isWhiteMove() && board.isBlackKingAndRookNeverMove() && toY == 0 && toX == 6 && !tools.isChessPieceExistBetweenFromAndToInX(board, 4, 7, 0)) {
+		if (!board.isWhiteMove() && board.isBlackKingAndRookNeverMove() && toY == 0 && toX == 6 && !board.isChessPieceExistBetweenFromAndToInX(4, 7, 0)) {
 			if(checkBehavior.isBlackKingSafe(board.getBoard(), 0, 5)) return true;
 		}
-		if (!board.isWhiteMove() && board.isBlackKingAndRookNeverMove() && toY == 0 && toX == 2 && !tools.isChessPieceExistBetweenFromAndToInX(board, 0, 4, 0)) {
+		if (!board.isWhiteMove() && board.isBlackKingAndRookNeverMove() && toY == 0 && toX == 2 && !board.isChessPieceExistBetweenFromAndToInX(0, 4, 0)) {
 			if(checkBehavior.isBlackKingSafe(board.getBoard(), 0, 3)) return true;
 		}
 		

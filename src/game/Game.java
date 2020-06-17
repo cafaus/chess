@@ -58,10 +58,9 @@ public class Game {
 
 	  
 	private Coordinates doCoordinateMoveNotation(String input) throws Exception {
-		String chessPiece = new String("RNBQ"); // pawn must be remove
+		String chessPiece = new String("RNBQ"); 
 		
 		Coordinates coordinate = new Coordinates();
-		Tools tools = new Tools();
 		
 		if(input.length() != 5 && input.length() != 6)throw new Exception("Invalid Move: length must be 5 or 6!!!");
 		
@@ -70,7 +69,7 @@ public class Game {
 		char toIndexZero = input.charAt(3);
 		char toIndexOne = input.charAt(4);
 		
-		isValidInput(input, chessPiece, tools, fromIndexZero, fromIndexOne, toIndexZero, toIndexOne);
+		isValidInput(input, chessPiece);
 		
 		if(input.length() == 6) {
 			coordinate.SetChessPiecePromoteCharToObject(input.charAt(5), board.isWhiteMove());
@@ -82,21 +81,25 @@ public class Game {
 		return coordinate;
 	}
 	
-	private void isValidInput(String input, String chessPiece, Tools tools, char fromIndexZero, char fromIndexOne,
-			char toIndexZero, char toIndexOne) throws Exception {
+	private void isValidInput(String input, String chessPiece) throws Exception {
+		char fromIndexZero = input.charAt(0);
+		char fromIndexOne = input.charAt(1);
+		char toIndexZero = input.charAt(3);
+		char toIndexOne = input.charAt(4);
+		
 		if(input.length() == 5) {
-			if(tools.isOutside(fromIndexZero,'A','H'))throw new Exception("Invalid Move: first character!!!");
-			if(tools.isOutside(fromIndexOne, '1', '8')) throw new Exception("Invalid Move: second character!!!");
+			if(isOutside(fromIndexZero,'A','H'))throw new Exception("Invalid Move: first character!!!");
+			if(isOutside(fromIndexOne, '1', '8')) throw new Exception("Invalid Move: second character!!!");
 			if(input.charAt(2) != '-') throw new Exception("Invalid Move: third character!!!");
-			if(tools.isOutside(toIndexZero,'A','H')) throw new Exception("Invalid Move: fourth character!!!");
-			if(tools.isOutside(toIndexOne, '1', '8')) throw new Exception("Invalid Move: fifth character!!!");
+			if(isOutside(toIndexZero,'A','H')) throw new Exception("Invalid Move: fourth character!!!");
+			if(isOutside(toIndexOne, '1', '8')) throw new Exception("Invalid Move: fifth character!!!");
 		}
 		else if(input.length() == 6) {
-			if(tools.isOutside(fromIndexZero,'A','H'))throw new Exception("Invalid Move: first character!!!");
-			if(tools.isOutside(fromIndexOne, '1', '8')) throw new Exception("Invalid Move: second character!!!");
+			if(isOutside(fromIndexZero,'A','H'))throw new Exception("Invalid Move: first character!!!");
+			if(isOutside(fromIndexOne, '1', '8')) throw new Exception("Invalid Move: second character!!!");
 			if(input.charAt(2) != '-') throw new Exception("Invalid Move: third character!!!");
-			if(tools.isOutside(toIndexZero,'A','H')) throw new Exception("Invalid Move: fourth character!!!");
-			if(tools.isOutside(toIndexOne, '1', '8')) throw new Exception("Invalid Move: fifth character!!!");
+			if(isOutside(toIndexZero,'A','H')) throw new Exception("Invalid Move: fourth character!!!");
+			if(isOutside(toIndexOne, '1', '8')) throw new Exception("Invalid Move: fifth character!!!");
 			for (int i = 0; i < chessPiece.length(); i++) {
 				if(input.charAt(5) == chessPiece.charAt(i)) break;
 				if(i == 4)throw new Exception("Invalid Move: promotion character!!!");
@@ -105,6 +108,9 @@ public class Game {
 		}
 	}
 
+	private boolean isOutside(char fromIndexZero, char c1, char c2) {
+		return fromIndexZero < c1 || fromIndexZero > c2;
+	}
 	
 	private boolean doMove(Coordinates coordinate)  {
 		

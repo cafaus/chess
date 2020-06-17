@@ -14,7 +14,7 @@ project for code reengineering
 - [X] checkmate
 - [x] draw on stalemate position
 - [x] unit tests: test coverage min. 90%
-- [ ] reduce code smells
+- [x] reduce code smells
 
 ## How to Play
 Uppercase: Black Piece
